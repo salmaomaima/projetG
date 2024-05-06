@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Authentification </title>
+  <link rel="stylesheet" type="text/css" href="../static/css/styles.css" th:href="@{css/styles.css}" />
+  <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'/>
+
+</head>
+<body>
+<header>
+        <div class="logo">
+            <a th:href="@{acceuil2}"> <span>MON</span>CONGÉ</a>
+        </div>
+        <ul class="menu">
+            <li><a href="#">Acceuil</a></li>
+            </ul>
+        <div class="responsive-menu"></div>
+    </header>
+  <div class="wrapper">
+    <form th:action="@{/login}" method="post">
+      <h1>Authentification</h1>
+      <div class="input-box">
+        <input type="text" name="username" placeholder="Nom Utilisateur" required="required" />
+        <i class='bx bxs-user'></i>
+      </div>
+      <div class="input-box">
+        <input type="password" name="password" placeholder="Mot de passe" required="required"/>
+        <i class='bx bxs-lock-alt' ></i>
+      </div>
+      
+      <button type="submit" value="Sign in" class="btn">Se connecter</button>
+      
+    </form>
+  </div>
+</body>
+</html>

@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymleaf.org">
+
+<head>
+
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <meta name="description" content=""/>
+    <meta name="author" content=""/>
+
+    <title>List Type Congee</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" type="text/css" th:href="@{bower_components/bootstrap/dist/css/bootstrap.min.css}" />
+
+    <!-- MetisMenu CSS -->
+    <link rel="stylesheet" type="text/css" th:href="@{bower_components/metisMenu/dist/metisMenu.min.css}"/>
+
+    <!-- Timeline CSS -->
+    <link rel="stylesheet" type="text/css" th:href="@{dist/css/timeline.css}"/>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" type="text/css" th:href="@{dist/css/sb-admin-2.css}" />
+
+    <!-- Morris Charts CSS -->
+    <link rel="stylesheet" type="text/css" th:href="@{bower_components/morrisjs/morris.css}" />
+
+    <!-- Custom Fonts -->
+    <link rel="stylesheet" type="text/css" th:href="@{bower_components/font-awesome/css/font-awesome.min.css}" />
+
+	<link   rel="stylesheet" type="text/css" href="../static/css/myStyle.css" th:href="@{css/myStyle.css}"/>
+</head>
+
+
+<body>
+
+    <div id="wrapper">
+
+        <!-- Navigation -->
+         <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+           <div class="navbar-header">
+                
+                <label class="navbar-brand">Centre National de l'Informatique</label>
+            </div>
+
+             <ul class="nav navbar-top-links navbar-right">
+             
+              <!-- notification responsable direct -->
+               <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                        <i class="fa fa-envelope fa-fw"></i>  <i class="fa fa-caret-down"></i>
+                    </a>
+                    
+                    <ul class="dropdown-menu dropdown-messages">
+                       <li th:each="n:${notif}" >
+                        <form th:action="demande_N1_rh" method="get" name="djo">
+                            <button type="submit" class="btn btn-default btn-block">Demande N° <input type="hidden" name="ntf" th:text= "${n.id_validation}" th:value= "${n.id_validation}"/></button>
+                        </form>
+                        </li>
+                        <li class="divider"></li>
+                        
+                    </ul>
+                  
+                </li>
+        
+               <!-- notification premier responsable -->
+                <li class="dropdown">
+               		  <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                        <i class="fa fa-tasks fa-fw"></i>  <i class="fa fa-caret-down"></i>
+                    </a>
+                    
+                   
+                    <ul class="dropdown-menu dropdown-tasks">
+                        <li th:each="v:${valid}" >
+                        <form th:action="demande_N2_rh" method="get" name="djo">
+                        <button type="submit" value="supprimer" class="btn btn-default btn-block">Demande N°<input type="hidden" name="vld" th:text= "${v.id_validation}" th:value= "${v.id_validation}"/></button> 
+                        </form>
+                        </li>
+                        <li class="divider"></li>
+                       
+                        
+                    </ul>
+         
+                </li>
+                
+                
+                <!-- demande confirmer -->
+              <li class="dropdown">
+               		  <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                        <i class="fa fa-save fa-fw"></i>  <i class="fa fa-caret-down"></i>
+                    </a>
+                    
+                    
+                    <ul class="dropdown-menu dropdown-tasks">
+                        <li th:each="a:${arch}" >
+                          <form th:action="demande_N3" method="get" name="djo">
+                        <button type="submit" value="supprimer" class="btn btn-default btn-block">Demande N°<input type="hidden" name="vld" th:text= "${a.id_validation}" th:value= "${a.id_validation}"/></button> 
+                        </form>
+                        </li>
+                        <li class="divider"></li>
+                       
+                       
+                    </ul>
+                </li>
+                
+                
+           
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                        <i class="fa fa-users fa-fw"></i>  <i class="fa fa-caret-down"></i>
+                    </a>
+                    <ul class="dropdown-menu dropdown-user">
+                        <li><a th:href="@{/profil_ressource}"><i class="fa fa-user fa-fw"></i>Profil</a>
+                        </li>
+                        <li><a th:href="@{/mot_de_passe_ressource}"><i class="fa fa-gear fa-fw"></i> Configuration</a>
+                        </li>
+                        <li class="divider"></li>
+                        <li><a th:href="@{/logout}"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
+                        </li>
+                    </ul>
+                  
+                </li>
+               
+            </ul>
+
+         
+         
+            <div class="navbar-default sidebar" role="navigation">
+                <div class="sidebar-nav navbar-collapse">
+                    <ul class="nav" id="side-menu">
+                        <li class="sidebar-search">
+                            <div class="input-group custom-search-form">
+                                
+                            </div>
+                           
+                        </li>
+                        <li>
+                            <a th:href="@{/index_ressource_humaine}"><i class="fa fa-dashboard fa-fw"></i> acceuil</a>
+                        </li>
+                        <li>
+                            <a ><i class="fa fa-file-text fa-fw"></i> Demande<span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+                                <li>
+                                    <a th:href="@{/remplir_demande_rh}">Remplir demande</a>
+                                </li>
+                                <li>
+                                    <a th:href="@{/etat_demande_rh}">Etat demande</a>
+                                </li>
+								<li>
+                                    <a th:href="@{/reprise_demande_rh}">Reprise demande</a>
+                                </li>
+								 <li>
+                            <a th:href="@{/list_demande_rh}"><i class="fa fa-table fa-fw"></i> List demande</a>
+                        </li>
+                            </ul>
+                            
+                        </li>
+						 <li>
+                            <a href="#"><i class="fa fa-user-md fa-fw"></i> Employer <span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+                                <li>
+                                    <a th:href="@{/formulaire_ajouter_employer}">Ajouter employer</a>
+                                </li>
+                                <li>
+                            <a th:href="@{/list_employer}"><i class="fa fa-table fa-fw"></i> List d'employer</a>
+                        </li>
+                               
+                            </ul>
+                            
+                        </li>
+						 <li>
+                            <a href="#"><i class="fa fa-building fa-fw"></i> Departement <span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+                                <li>
+                                    <a th:href="@{/formulaire_ajouter_departement}">Ajouter departement</a>
+                                </li>
+                                <li>
+                            <a th:href="@{/list_departement}"><i class="fa fa-table fa-fw"></i> List departement</a>
+                        </li>
+                               
+                            </ul>
+                         
+                        </li>
+						 <li>
+                            <a href="#"><i class="fa  fa-certificate fa-fw"></i> Type congee <span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+                                <li>
+                                    <a th:href="@{/formulaire_ajouter_type_congee}">Ajouter type</a>
+                                </li>
+                               <li>
+                            <a th:href="@{/list_type_congee}"><i class="fa fa-table fa-fw"></i> List type congee</a>
+                        </li>
+                       
+                               
+                            </ul>
+                          
+                        </li>
+                        
+					   
+                      
+						
+						
+                        
+                       
+                    </ul>
+                </div>
+           
+            </div>
+           
+           
+           
+           
+           
+           
+        </nav>
+
+        <div id="page-wrapper">
+            <div class="row">
+                <div class="col-lg-9 spacer-lm">
+                    <h1 class="page-header">Listes  types de congées</h1>
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+            <!-- /.row -->
+            <div class="row">
+                <div class="col-lg-9 spacer-lm">
+                    <div class="panel panel-info">
+                       <!--  <div class="panel-heading">
+                            DataTables Advanced Tables
+                        </div> -->
+                        <!-- /.panel-heading -->
+                        <div class="panel-body">
+                            <div class="dataTable_wrapper">
+                                <table class="table table-striped table-hover tc">
+                                    <thead>
+                                        <tr class="active">
+                                         
+                                            <th class="tc">nom</th>
+                                            <th class="tc">nombres de jours</th>
+                                     
+                                           
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                     <form th:action="del_mod_typ" method="get" name="del" th:each="t:${type}">
+                                        <tr  class="warning">
+												<input th:type="hidden" th:value="${t.id_type}" name="id_type"/>
+												<td ><input th:type="hidden" th:text="${t.nom_type}" th:value="${t.nom_type}" /></td>
+												<td ><input th:type="hidden" th:text="${t.nmbre_jours}" th:value="${t.nmbre_jours}" /></td>
+												<td><button type="submit" name="action" value="modifier" class="btn btn-primary">Modifier</button></td>
+												<td><button type="submit" name="action" value="supprimer" class="btn btn-danger">Supprimer</button></td>							
+										</tr>
+										</form>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <!-- /.table-responsive -->
+                   
+                        </div>
+                       
+                       
+                       
+                       
+                       
+                        <!-- /.panel-body -->
+                    </div>
+                    <!-- /.panel -->
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+           
+           
+           
+           
+       
+        </div>
+        <!-- /#page-wrapper -->
+
+    </div>
+    <!-- /#wrapper -->
+
+    <!-- jQuery -->
+    <script src="../bower_components/jquery/dist/jquery.min.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="../bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+
+    <!-- Metis Menu Plugin JavaScript -->
+    <script src="../bower_components/metisMenu/dist/metisMenu.min.js"></script>
+
+    <!-- DataTables JavaScript -->
+    <script src="../bower_components/datatables/media/js/jquery.dataTables.min.js"></script>
+    <script src="../bower_components/datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.min.js"></script>
+
+    <!-- Custom Theme JavaScript -->
+    <script src="../dist/js/sb-admin-2.js"></script>
+
+    <!-- Page-Level Demo Scripts - Tables - Use for reference -->
+   
+  <script>
+    $(document).ready(function() {
+        $('#dataTables-example').DataTable({
+                responsive: true
+        });
+    });
+    </script>
+</body>
+
+</html>

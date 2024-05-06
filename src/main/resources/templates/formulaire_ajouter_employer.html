@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymleaf.org">
+
+<head>
+
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <meta name="description" content=""/>
+    <meta name="author" content=""/>
+
+    <title> Ajouter Employer </title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="../bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet"/>
+
+    <!-- MetisMenu CSS -->
+    <link href="../bower_components/metisMenu/dist/metisMenu.min.css" rel="stylesheet"/>
+
+    <!-- Custom CSS -->
+    <link href="../dist/css/sb-admin-2.css" rel="stylesheet"/>
+
+    <!-- Custom Fonts -->
+    <link href="../bower_components/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
+    
+    <link   rel="stylesheet" type="text/css" href="../static/css/myStyle.css" th:href="@{css/myStyle.css}"/>
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+      <script language='javascript'>
+    function verif(){
+    	
+    	if(document.djo.nom_utilisateur.value==''){
+    		alert("sasir un nom d'utilisateur");
+    		document.djo.nom_utilisateur.style.borderColor="#F00000";
+    		return false}
+    	if(!(isNaN(document.djo.nom_utilisateur.value))){
+    		alert("le nom d'utilisateur est une chaine de caractaire");
+    		document.djo.nom_utilisateur.style.borderColor="#FF6600";
+    		return false}
+    	var m=document.djo.mot_de_passe.value;
+    	if(m==''){
+    		alert("sasir une mot de passe");
+    		m.style.borderColor="#F00000";
+    		return false}
+    	if(document.djo.adresse.value==''){
+        		alert("sasir une adresse");
+        		document.djo.adresse.style.borderColor="#F00000";
+        		return false}
+    	if(!(isNaN(document.djo.adresse.value))){
+    		alert("le adresse est une chaine de caractaire");
+    		document.djo.adresse.style.borderColor="#FF6600";
+    		return false}
+    	if((document.djo.telephone.value=='')||(isNaN(document.djo.telephone.value))){
+    		alert('saisir un numero de telephone');
+    		document.djo.telephone.style.borderColor="#F00000";
+    		return false}
+    	if(document.djo.grade.value==''){
+    		alert("sasir une grade");
+    		document.djo.grade.style.borderColor="#F00000";
+    		return false}
+    	if(!(isNaN(document.djo.grade.value))){
+    		alert("le grade est une chaine de caractaire");
+    		document.djo.grade.style.borderColor="#FF6600";
+    		return false}
+    	if(document.djo.nom.value==''){
+    		alert("sasir un nom");
+    		document.djo.nom.style.borderColor="#F00000";
+    		return false}
+    	if(!(isNaN(document.djo.nom.value))){
+    		alert("le nom est une chaine de caractaire");
+    		document.djo.nom.style.borderColor="#FF6600";
+    		return false}
+    	if(document.djo.prenom.value==''){
+    		alert("sasir un prenom");
+    		document.djo.prenom.style.borderColor="#F00000";
+    		return false}
+    	if(!(isNaN(document.djo.prenom.value))){
+    		alert("le prenom est une chaine de caractaire");
+    		document.djo.prenom.style.borderColor="#FF6600";
+    		return false}
+    	if((document.djo.idresponsable.value=='')||(isNaN(document.djo.idresponsable.value))){
+    		alert('selectionner un responsable');
+    		document.djo.idresponsable.style.borderColor="#F00000";
+    		return false}
+    	if((document.djo.id_departement.value=='')||(isNaN(document.djo.id_departement.value))){
+    		alert('selectionner un departement');
+    		document.djo.id_departement.style.borderColor="#F00000";
+    		return false}
+    	if((document.djo.id_role.value=='')||(isNaN(document.djo.id_role.value))){
+    		alert('selectionner une role');
+    		document.djo.id_role.style.borderColor="#F00000";
+    		return false}
+    
+    	
+    	else 
+    		return true;
+    }
+    
+    </script>
+
+</head>
+
+<body>
+
+    <div id="wrapper">
+
+       <!-- Navigation -->
+         <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+           <div class="navbar-header">
+                
+                <label class="navbar-brand">Centre National de l'Informatique</label>
+            </div>
+
+             <ul class="nav navbar-top-links navbar-right">
+             
+              <!-- notification responsable direct -->
+               <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                        <i class="fa fa-envelope fa-fw"></i>  <i class="fa fa-caret-down"></i>
+                    </a>
+                    
+                    <ul class="dropdown-menu dropdown-messages">
+                       <li th:each="n:${notif}" >
+                        <form th:action="demande_N1_rh" method="get" name="djo">
+                            <button type="submit" class="btn btn-default btn-block">Demande N° <input type="hidden" name="ntf" th:text= "${n.id_validation}" th:value= "${n.id_validation}"/></button>
+                        </form>
+                        </li>
+                        <li class="divider"></li>
+                        
+                    </ul>
+                  
+                </li>
+        
+               <!-- notification premier responsable -->
+                <li class="dropdown">
+               		  <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                        <i class="fa fa-tasks fa-fw"></i>  <i class="fa fa-caret-down"></i>
+                    </a>
+                    
+                   
+                    <ul class="dropdown-menu dropdown-tasks">
+                        <li th:each="v:${valid}" >
+                        <form th:action="demande_N2_rh" method="get" name="djo">
+                        <button type="submit" value="supprimer" class="btn btn-default btn-block">Demande N°<input type="hidden" name="vld" th:text= "${v.id_validation}" th:value= "${v.id_validation}"/></button> 
+                        </form>
+                        </li>
+                        <li class="divider"></li>
+                       
+                        
+                    </ul>
+         
+                </li>
+                
+                
+                <!-- demande confirmer -->
+              <li class="dropdown">
+               		  <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                        <i class="fa fa-save fa-fw"></i>  <i class="fa fa-caret-down"></i>
+                    </a>
+                    
+                    
+                    <ul class="dropdown-menu dropdown-tasks">
+                        <li th:each="a:${arch}" >
+                          <form th:action="demande_N3" method="get" name="djo">
+                        <button type="submit" value="supprimer" class="btn btn-default btn-block">Demande N°<input type="hidden" name="vld" th:text= "${a.id_validation}" th:value= "${a.id_validation}"/></button> 
+                        </form>
+                        </li>
+                        <li class="divider"></li>
+                       
+                       
+                    </ul>
+                </li>
+                
+                
+           
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                        <i class="fa fa-users fa-fw"></i>  <i class="fa fa-caret-down"></i>
+                    </a>
+                    <ul class="dropdown-menu dropdown-user">
+                        <li><a th:href="@{/profil_ressource}"><i class="fa fa-user fa-fw"></i>Profil</a>
+                        </li>
+                        <li><a th:href="@{/mot_de_passe_ressource}"><i class="fa fa-gear fa-fw"></i> Configuration</a>
+                        </li>
+                        <li class="divider"></li>
+                        <li><a th:href="@{/logout}"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
+                        </li>
+                    </ul>
+                  
+                </li>
+               
+            </ul>
+
+         
+         
+            <div class="navbar-default sidebar" role="navigation">
+                <div class="sidebar-nav navbar-collapse">
+                    <ul class="nav" id="side-menu">
+                        <li class="sidebar-search">
+                            <div class="input-group custom-search-form">
+                                
+                            </div>
+                           
+                        </li>
+                        <li>
+                            <a th:href="@{/index_ressource_humaine}"><i class="fa fa-dashboard fa-fw"></i> acceuil</a>
+                        </li>
+                        <li>
+                            <a ><i class="fa fa-file-text fa-fw"></i> Demande<span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+                                <li>
+                                    <a th:href="@{/remplir_demande_rh}">Remplir demande</a>
+                                </li>
+                                <li>
+                                    <a th:href="@{/etat_demande_rh}">Etat demande</a>
+                                </li>
+								<li>
+                                    <a th:href="@{/reprise_demande_rh}">Reprise demande</a>
+                                </li>
+								 <li>
+                            <a th:href="@{/list_demande_rh}"><i class="fa fa-table fa-fw"></i> List demande</a>
+                        </li>
+                            </ul>
+                            
+                        </li>
+						 <li>
+                            <a href="#"><i class="fa fa-user-md fa-fw"></i> Employer <span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+                                <li>
+                                    <a th:href="@{/formulaire_ajouter_employer}">Ajouter employer</a>
+                                </li>
+                                <li>
+                            <a th:href="@{/list_employer}"><i class="fa fa-table fa-fw"></i> List d'employer</a>
+                        </li>
+                               
+                            </ul>
+                            
+                        </li>
+						 <li>
+                            <a href="#"><i class="fa fa-building fa-fw"></i> Departement <span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+                                <li>
+                                    <a th:href="@{/formulaire_ajouter_departement}">Ajouter departement</a>
+                                </li>
+                                <li>
+                            <a th:href="@{/list_departement}"><i class="fa fa-table fa-fw"></i> List departement</a>
+                        </li>
+                               
+                            </ul>
+                         
+                        </li>
+						 <li>
+                            <a href="#"><i class="fa  fa-certificate fa-fw"></i> Type congee <span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+                                <li>
+                                    <a th:href="@{/formulaire_ajouter_type_congee}">Ajouter type</a>
+                                </li>
+                               <li>
+                            <a th:href="@{/list_type_congee}"><i class="fa fa-table fa-fw"></i> List type congee</a>
+                        </li>
+                       
+                               
+                            </ul>
+                          
+                        </li>
+                        
+					   
+                      
+						
+						
+                        
+                       
+                    </ul>
+                </div>
+           
+            </div>
+           
+           
+           
+           
+           
+           
+        </nav>
+
+        <div id="page-wrapper">
+            <div class="row">
+                <div class="col-lg-9">
+                    <h1 class="page-header">Ajouter un employer</h1>
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+            <!-- /.row -->
+            <div class="row">
+                <div class="col-lg-9">
+                    <div class="panel panel-success">
+                        <div class="panel-heading">
+                            Remplir tous les champs du formulaire
+                        </div>
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <form th:action="ajouter_employer" method="get" name="djo" onsubmit="return verif()">
+                                       <div class="form-group">
+									   
+			  <label class="control-label">nom utilisateur:</label>
+			  <input class="form-control" type="text" name="nom_utilisateur" placeholder="nom_utilisateur" onKeyUp="javascript:couleur(this)"/>
+			</div>
+	
+		<div class="form-group">
+			  <label class="control-label">mot de passe:</label>
+			  <input class="form-control" type="text" name="mot_de_passe" placeholder="mot_de_passe" onKeyUp="javascript:couleur(this)"/>
+			</div>
+				<div class="form-group">
+			  <label class="control-label">nom:</label>
+			  <input class="form-control" type="text" name="nom" placeholder="nom" onKeyUp="javascript:couleur(this)"/>
+			</div>
+		<div class="form-group">
+			  <label class="control-label">prenom:</label>
+			  <input class="form-control" type="text" name="prenom" placeholder="prenom " onKeyUp="javascript:couleur(this)"/>
+			</div>
+		<div class="form-group">
+			  <label class="control-label">adresse:</label>
+			  <input class="form-control" type="text" name="adresse" placeholder="adresse" onKeyUp="javascript:couleur(this)"/>
+			</div>
+		<div class="form-group">
+			  <label class="control-label">telephone:</label>
+			  <input class="form-control" type="text" name="telephone" placeholder="telephone" onKeyUp="javascript:couleur(this)"/>
+			</div>
+			<div class="form-group">
+			  <label class="control-label">grade:</label>
+			  <input class="form-control" type="text" name="grade" placeholder="grade" onKeyUp="javascript:couleur(this)"/>
+			</div>
+	
+		<div class="form-group">
+		
+		 
+			  <label class="control-label">nom responsable:</label>
+			  <select class="form-control" th:name="idresponsable" onKeyUp="javascript:couleur(this)">
+			 									 <option>selectionner un responsable</option>
+                                                <option th:each="e:${emp}" th:text="${e.nom}" th:value="${e.id_employer}"></option>                                                
+                                            </select>
+			</div>
+		<div class="form-group">
+			  <label class="control-label" >departement:</label>
+			  <select class="form-control" name="id_departement" onKeyUp="javascript:couleur(this)">
+			   <option>selectionner un departement</option>
+                                                <option th:each="d:${dep}" th:text="${d.nom_departement}" th:value="${d.id_departement}" th:name="id_departement"></option>
+                                                
+                                          </select>
+			</div>
+		<div class="form-group">
+			  <label class="control-label">role:</label>
+			  <select class="form-control" name="id_role" onKeyUp="javascript:couleur(this)">
+			   <option>selectionner une role</option>
+                                                <option th:each="r:${rol}"  th:type="hidden" th:text="${r.description}" th:value="${r.id_roles}" ></option>
+                                                
+                                            </select>
+			</div>
+	
+	<div class="form-group col-lg-12 ">
+		<div class="form-group col-lg-6"><br/>	<center>	<button type="submit" class="btn btn-success">Ajouter</button> </center> </div>
+		<div class="form-group col-lg-6">	<br/>	<button type="reset" class="btn btn-warning">Reset</button> </div>
+	</div>
+                                      
+                                     
+                                      
+                                       
+                                        
+                                    </form>
+                                </div>
+                               
+						   <!-- /.col-lg-6 (nested) -->
+                            </div>
+                            <!-- /.row (nested) -->
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                    <!-- /.panel -->
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+            <!-- /.row -->
+        </div>
+        <!-- /#page-wrapper -->
+
+    </div>
+    <!-- /#wrapper -->
+
+    <!-- jQuery -->
+    <script src="../bower_components/jquery/dist/jquery.min.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="../bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+
+    <!-- Metis Menu Plugin JavaScript -->
+    <script src="../bower_components/metisMenu/dist/metisMenu.min.js"></script>
+
+    <!-- Custom Theme JavaScript -->
+    <script src="../dist/js/sb-admin-2.js"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymleaf.org">
+
+<head>
+
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <meta name="description" content=""/>
+    <meta name="author" content=""/>
+
+    <title> Remplir Demande</title>
+
+ 	<!-- mystyle css -->
+    <link href="../css/myStyle.css" rel="stylesheet"/>
+    
+    <!-- Bootstrap Core CSS -->
+    <link href="../bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet"/>
+
+    <!-- MetisMenu CSS -->
+    <link href="../bower_components/metisMenu/dist/metisMenu.min.css" rel="stylesheet"/>
+
+    <!-- Custom CSS -->
+    <link href="../dist/css/sb-admin-2.css" rel="stylesheet"/>
+
+    <!-- Custom Fonts -->
+    <link href="../bower_components/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
+    <link   rel="stylesheet" type="text/css" href="../static/css/myStyle.css" th:href="@{css/myStyle.css}"/>
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+     <script language='javascript'>
+    function verif(){
+    	
+    	if(document.djo.avis_rd.value==''){
+    		alert(' il faut que vous ajoutez votre avis ');
+    		document.djo.id_type.style.borderColor="#F00000";
+    		return false}
+    	else if(document.djo.id_remplacant.value==''){
+    		alert(" selectionner un remblaçant");
+    		document.djo.date_fin.style.borderColor="#F00000";
+    		return false}
+    	else if(isNaN(document.djo.id_remplacant.value)){
+    		alert(" selectionner un remblaçant");
+    		document.djo.date_fin.style.borderColor="#F00000";
+    		return false}
+    	
+    	else 
+    		return true;
+    }
+    </script>
+
+</head>
+
+<body>
+
+    <div id="wrapper">
+
+       <!-- Navigation -->
+        <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <label class="navbar-brand" th:text="${username}"></label>
+            </div>
+            <!-- /.navbar-header -->
+
+             <ul class="nav navbar-top-links navbar-right">
+             
+               <!-- notification responsable direct -->
+               <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                        <i class="fa fa-envelope fa-fw"></i>  <i class="fa fa-caret-down"></i>
+                    </a>
+                    
+                    <ul class="dropdown-menu dropdown-messages">
+                       <li th:each="n:${notif}" >
+                        <form th:action="demande_N1" method="get" name="djo">
+                            <button type="submit" class="btn btn-default btn-block">Demande N° <input type="hidden" name="ntf" th:text= "${n.id_validation}" th:value= "${n.id_validation}"/></button>
+                        </form>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <a class="text-center" href="#">
+                                <strong>Read All Messages</strong>
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        </li>
+                    </ul>
+                  
+                </li>
+        
+               <!-- notification premier responsable -->
+                <li class="dropdown">
+               		  <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                        <i class="fa fa-tasks fa-fw"></i>  <i class="fa fa-caret-down"></i>
+                    </a>
+                    
+                   
+                    <ul class="dropdown-menu dropdown-tasks">
+                        <li th:each="v:${valid}" >
+                        <form th:action="demande_N2" method="get" name="djo">
+                        <button type="submit" value="supprimer" class="btn btn-default btn-block">Demande N°<input type="hidden" name="vld" th:text= "${v.id_validation}" th:value= "${v.id_validation}"/></button> 
+                        </form>
+                        </li>
+                        <li class="divider"></li>
+                       
+                        <li>
+                            <a class="text-center" href="#">
+                                <strong>See All Tasks</strong>
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        </li>
+                    </ul>
+         
+                </li>
+                
+                
+                
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                        <i class="fa fa-users fa-fw"></i>  <i class="fa fa-caret-down"></i>
+                    </a>
+                   <ul class="dropdown-menu dropdown-user">
+                        <li><a th:href="@{/profil}"><i class="fa fa-user fa-fw"></i>Profil</a>
+                        </li>
+                        <li><a th:href="@{/mot_de_passe}"><i class="fa fa-gear fa-fw"></i> Configuration</a>
+                        </li>
+                        <li class="divider"></li>
+                        <li><a th:href="@{/logout}"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
+                        </li>
+                    </ul>
+          
+                </li>
+            
+            </ul>
+           
+          <div class="navbar-default sidebar" role="navigation">
+                <div class="sidebar-nav navbar-collapse">
+                    <ul class="nav" id="side-menu">
+                        <li class="sidebar-search">
+                            <div class="input-group custom-search-form">
+                                <input type="text" class="form-control" placeholder="Search..."/>
+                                <span class="input-group-btn">
+                                <button class="btn btn-default" type="button">
+                                    <i class="fa fa-search"></i>
+                                </button>
+                            </span>
+                            </div>
+                            <!-- /input-group -->
+                        </li>
+                        <li>
+                            <a th:href="@{/getrolesuser}"><i class="fa fa-dashboard fa-fw"></i> acceuil</a>
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa fa-file-text fa-fw"></i> Demande<span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+                                <li>
+                                    <a th:href="@{/remplir_demande}">Remplir demande</a>
+                                </li>
+                                <li>
+                                    <a th:href="@{/etat_demande}">Etat demande</a>
+                                </li>
+								<li>
+                                    <a th:href="@{/reprise_demande}">Reprise demande</a>
+                                </li>
+								 <li>
+                            <a th:href="@{/list_demande}"><i class="fa fa-table fa-fw"></i> List demande</a>
+                        </li>
+                            </ul>
+                            <!-- /.nav-second-level -->
+                        </li>
+				
+					   
+                      
+						
+						
+                        
+                       
+                    </ul>
+                </div>
+                <!-- /.sidebar-collapse -->
+            </div>
+            <!-- /.navbar-static-side -->
+        </nav>
+
+        <div id="page-wrapper">
+            <div >
+                <div class="col-lg-12">
+                    <h5 class="page-header">Centre National de l'Informatique <br/>  Département de la gestion</h5>
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+            <!-- /.row -->
+            <div >
+                <div class="col-lg-12">
+                    <div class="panel panel-success">
+                        <div class="panel-heading">
+                           <center><h4><b>Demande de congee</b></h4></center> 
+                        </div>
+                        <div class="panel-body">
+                            <div >
+                                <div class="col-lg-12 spacer-lg ">
+                             
+                                    <form  th:action="validation_N1" method="get" name="djo" onsubmit="return verif()">
+                                    
+                                            
+                                  
+                                  <div class="row spacer-lm spacer-tm">
+                                     <table class="col-lg-9 " th:each="e:${emp_env}">									  
+											
+											<tr > 
+											<td>nom et prenom : </td>
+											<td> <input class="form-control" type="hidden"  th:text="${e.nom}" /></td>
+											<td>    <input class="form-control" type="hidden"   th:text="${e.prenom}"/></td>
+											<td colspan="3"><input type="hidden" name="id_employer" th:value="${e.id_employer}" /> <input type="hidden" th:value="${v.id_validation}" name="id_validation"/> </td>
+											</tr>
+											
+											 <tr>
+											 <td>poste : </td>
+											 <td th:each="dp:${dp}"><input class="form-control" type="hidden"  th:text="${dp.nom_departement}"/></td>
+											 <td>  grade :</td>
+											 <td> <input class="form-control" type="hidden"  th:text="${e.grade}"/></td>
+											 <td colspan="2"></td>
+											 </tr>
+									
+											 <tr>
+											 <td colspan="6"><h4><center>Au Monsieur le directeur général</center></h4></td>
+											 </tr>
+											 <tr></tr>
+											 <tr>
+											 <td colspan="4">Je depose cette demande à votre majesté de l'intention de profitez d'un congée :</td>
+											 <td th:each="t:${type}">
+									
+                                                <input class="form-control" type="hidden" th:text="${t.nom_type}" />                                           
+                                           
+											 </td>
+											 <td colspan=""></td>
+											 </tr>
+											 
+											 <tr th:each="d:${dem}" >
+								
+											  <td> pour une periode </td><td><input class="form-control" type="hidden"   th:text="${d.periode}"/></td>
+											  <td>,   à la debut de :</td><td><input class="form-control"  type="hidden"  th:text="${d.date_debut}"/></td>
+											    <td>,  se termine le :</td><td><input class="form-control" type="hidden"   th:text="${d.date_fin}"/></td>
+											 </tr>
+											 
+											 <tr th:each="d:${dem}">
+											 <td>telephone :</td>
+											 <td><input class="form-control" th:type="hidden"  th:text="${e.telephone}"  /></td>
+											 <td>rediger le :</td>
+											 <td ><input class="form-control" type="hidden"  th:text="${d.date_envoit}"/></td>
+											 <td colspan="2"><input class="form-control" type="hidden" name="id_demande" th:value="${d.id_demande}"/> </td>
+											 </tr>										 
+									 </table>
+									</div> 
+									
+									
+									
+									
+									
+									<br/>
+									<br/>
+								
+						 <div class="row">			
+
+						<table class="col-lg-12 "  th:each="rd:${rd}">
+						<tr>
+						<td colspan="2"><center><h4><b>organisme responsable</b></h4></center></td>
+						</tr>
+					<tr><td colspan="2"><center><h4><b>Responsable Directe</b></h4></center> <br/></td></tr>
+					<tr>
+						<td>Nom de responsable :
+						 <input class="form-control" type="hidden"  th:text="${rd.nom}"/>	</td>
+						<td ><input type="hidden" name="id_responsable" th:value="${rd.id_employer}" /> </td>
+					</tr>			
+					
+					<tr>
+					<td >Avis : 
+					 <textarea  class="form-control" name="avis_rd" placeholder="Vous pouvez saisir ici votre avis." ></textarea>		</td>
+					</tr>
+					
+					<tr>
+					<td>remplaçant de l'employer pandant la periode de congé :
+						
+					<select class="form-control" name="id_remplacant" >
+			 									 <option >selectionner un remplaçant</option>
+                                                <option th:each="e:${emp}" th:text="${e.nom}" th:value="${e.id_employer}"></option>                                                
+                                            </select>
+				</td>
+				
+				</tr>
+		  
+		  <tr>
+                   <td>La date :</td>
+			<td colspan="2"> <input class="form-control" type="hidden" th:name="date_validation_rd" th:value="${date}"   th:text="${date}"/></td>
+			
+		</tr>
+			
+			 <tr>
+				 <td><center><button type="submit" class="btn btn-success" name="action" value="accepter">accepter</button></center></td>
+				 <td><center><button type="submit" class="btn btn-warning" name="action" value="refuser">refuser</button></center></td>
+			 </tr> 
+											 
+						</table>			 	
+		
+		 </div> 
+		
+		
+	
+	                         
+	                         
+	                         
+	                         
+	                         
+	    <!--  <div class="row">                    
+	                         
+	     <br />
+						<br />
+						<hr />
+						<table class="col-lg-12"  th:each="e:${emp}">
+						<tr>
+						<td colspan="3"><center><h4><b>Organisme Responsable</b></h4></center></td></tr>
+					<tr><td colspan="3"><center><h4><b> Premier Responsable</b></h4></center></td></tr>
+					<tr>
+	<td>Nom de responsable :</td><td> <input class="form-control" type="text" name="nom" placeholder="nom de responsable"/>	</td></tr><br/>			
+					<tr>
+					<td>Avis:
+					<br/><textarea  class="form-control" name="le-message" rows="6" cols="40" placeholder="Vous pouvez saisir ici votre avis."></textarea></td></tr>
+				
+			  <tr>
+                   <td>La date :</td>
+			<td> <input class="form-control" type="date" name="date" /></td></tr><br/><br/>
+			 	
+		  <tr>
+			<br/><br/>								 <td><center><button type="submit" class="btn btn-default"  >Envoyer</button></center></td>
+											 <td><center><button type="reset" class="btn btn-default" >Reset</button></center></td>
+											 </tr> 
+						</table>
+							                    
+	                    		   
+	                       
+	                     </div>   -->
+	              <hr />         
+	                       
+<!-- <div class="row">	                       
+  <br />
+						<br />
+				
+						<table class="col-lg-12"  th:each="e:${emp}" >
+						<tr>
+						<td colspan="3"><center><h4><b>Spécialement pour le Ressource humaine</b></h4></center></td></tr>
+	<tr>
+	<td>Nom de responsable :</td><td> <input class="form-control" type="text" name="nom" placeholder="nom de responsable" id="disabledInput" disabled="disabled" />	</td></tr>
+	<tr>
+	<td>Les détails de droits de l'employer poue le congé de l'années : </td></tr><br/>				
+	<tr><td>l'années derniere :</td>
+			<td> <input class="form-control" type="text" name="date" placeholder="inserer la date" id="disabledInput" disabled="disabled"/></td></tr>
+	<tr><td>l'années actuel:</td>	
+			<td><input class="form-control" type="text" name="date" placeholder="inserer la date" id="disabledInput" disabled="disabled"/></td></tr>
+		<tr><td>total de solde:</td>	
+		<td><input class="form-control" type="text" name="solde" id="disabledInput" disabled="disabled"/></td></tr>	
+		<tr><td>Periode de congés souhaiter:</td>	
+		<td><input class="form-control" type="text" name="periode" id="disabledInput" disabled="disabled"/></td></tr>			
+	<tr><td>le reste de solde:</td>	
+	<td><input class="form-control" type="text" name="reste" id="disabledInput" disabled="disabled"/></td>	</tr>	
+			  <tr>
+                   <td>La date :</td>
+			<td> <input class="form-control" type="date" name="date" id="disabledInput" disabled="disabled"/></td></tr><br/><br/>
+			 	
+		  <tr>
+			<br/><br/>								 <td><center><button type="submit" class="btn btn-default" disabled="disabled">Envoyer</button></center></td>
+											 <td><center><button type="reset" class="btn btn-default" disabled="disabled">Reset</button></center></td>
+											 </tr>		
+						</table>	                                    
+                          </div>          -->   
+                                       
+                                        
+                                   </form>
+                                  
+                                </div>
+                               
+						   <!-- /.col-lg-6 (nested) -->
+                            </div>
+                            <!-- /.row (nested) -->
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                    <!-- /.panel -->
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+            <!-- /.row -->
+        </div>
+        <!-- /#page-wrapper -->
+</div>
+ 
+
+
+
+
+    <!-- jQuery -->
+    <script src="../bower_components/jquery/dist/jquery.min.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="../bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+
+    <!-- Metis Menu Plugin JavaScript -->
+    <script src="../bower_components/metisMenu/dist/metisMenu.min.js"></script>
+
+    <!-- Custom Theme JavaScript -->
+    <script src="../dist/js/sb-admin-2.js"></script>
+
+</body>
+
+</html>

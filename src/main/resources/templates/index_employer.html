@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymleaf.org">
+
+<head>
+
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <meta name="description" content=""/>
+    <meta name="author" content=""/>
+
+    <title>Index Employer</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" type="text/css" th:href="@{bower_components/bootstrap/dist/css/bootstrap.min.css}" />
+
+    <!-- MetisMenu CSS -->
+    <link rel="stylesheet" type="text/css" th:href="@{bower_components/metisMenu/dist/metisMenu.min.css}"/>
+
+    <!-- Timeline CSS -->
+    <link rel="stylesheet" type="text/css" th:href="@{dist/css/timeline.css}"/>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" type="text/css" th:href="@{dist/css/sb-admin-2.css}" />
+
+    <!-- Morris Charts CSS -->
+    <link rel="stylesheet" type="text/css" th:href="@{bower_components/morrisjs/morris.css}" />
+
+    <!-- Custom Fonts -->
+    <link rel="stylesheet" type="text/css" th:href="@{bower_components/font-awesome/css/font-awesome.min.css}" />
+    <link   rel="stylesheet" type="text/css" href="../static/css/myStyle.css" th:href="@{css/myStyle.css}"/>
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+
+<body>
+
+    <div id="wrapper">
+
+
+        <!-- Navigation -->
+        <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+           
+           <div class="navbar-header">
+                
+                <label class="navbar-brand">Centre National de l'Informatique</label>
+            </div>
+
+             <ul class="nav navbar-top-links navbar-right">
+             
+              <!-- notification responsable direct -->
+               <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                        <i class="fa fa-envelope fa-fw"></i>  <i class="fa fa-caret-down"></i>
+                    </a>
+                    
+                    <ul class="dropdown-menu dropdown-messages">
+                       <li th:each="n:${notif}" >
+                        <form th:action="demande_N1" method="get" name="djo">
+                            <button type="submit" class="btn btn-default btn-block">Demande N° <input type="hidden" name="ntf" th:text= "${n.id_validation}" th:value= "${n.id_validation}"/></button>
+                        </form>
+                        </li>
+                       
+                    </ul>
+                  
+                </li>
+        
+               <!-- notification premier responsable -->
+                <li class="dropdown">
+               		  <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                        <i class="fa fa-tasks fa-fw"></i>  <i class="fa fa-caret-down"></i>
+                    </a>
+                    
+                   
+                    <ul class="dropdown-menu dropdown-tasks">
+                        <li th:each="v:${valid}" >
+                        <form th:action="demande_N2" method="get" name="djo">
+                        <button type="submit" value="supprimer" class="btn btn-default btn-block">Demande N°<input type="hidden" name="vld" th:text= "${v.id_validation}" th:value= "${v.id_validation}"/></button> 
+                        </form>
+                        </li>
+                        
+                    
+                    </ul>
+         
+                </li>
+                
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                        <i class="fa fa-users fa-fw"></i>  <i class="fa fa-caret-down"></i>
+                    </a>
+                   <ul class="dropdown-menu dropdown-user">
+                        <li><a th:href="@{/profil}"><i class="fa fa-user fa-fw"></i>Profil</a>
+                        </li>
+                        <li><a th:href="@{/mot_de_passe}"><i class="fa fa-gear fa-fw"></i> Configuration</a>
+                        </li>
+                        <li class="divider"></li>
+                        <li><a th:href="@{/logout}"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
+                        </li>
+                    </ul>
+          
+                </li>
+            
+            </ul>
+           
+
+      
+      
+           <div class="navbar-default sidebar">
+                <div class="sidebar-nav navbar-collapse">
+                    <ul class="nav" id="side-menu">
+                        <li class="sidebar-search">
+                            <div class="input-group custom-search-form">
+                             
+                            </div>
+                            <!-- /input-group -->
+                        </li>
+                        <li>
+                            <a th:href="@{/index_employer}"><i class="fa fa-dashboard fa-fw"></i> acceuil</a>
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa fa-file-text fa-fw"></i> Demande<span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+                                <li>
+                                    <a th:href="@{remplir_demande.html}">Remplir demande</a>
+                                </li>
+                                <li>
+                                    <a th:href="@{etat_demande.html}">Etat demande</a>
+                                </li>
+								<li>
+                                    <a th:href="@{reprise_demande.html}">Reprise demande</a>
+                                </li>
+								 <li>
+                            <a th:href="@{list_demande.html}"><i class="fa fa-table fa-fw"></i> List demande</a>
+                        </li>
+                            </ul>
+                            <!-- /.nav-second-level -->
+                        </li>
+						
+                               
+                            </ul>
+ 
+                </div>
+                <!-- /.sidebar-collapse -->
+            </div>
+            <!-- /.navbar-static-side -->
+        </nav>
+
+        
+		<div id="page-wrapper" class="gr">
+            <div class="row gr ">
+                <div class="col-lg-12 ">
+                    <h1 class="page-header">
+                    <label>Bienvenue </label> 
+                    <label th:text="${username}"></label>
+                    </h1>
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+            <!-- /.row -->
+            <div class="row gr">
+                <div class="col-lg-3 col-md-6">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            <div class="row">
+                                <div class="col-xs-3">
+                                    <i class="fa fa-money fa-5x"></i>
+                                </div>
+                                <div class="col-xs-9 text-right">
+                                 
+                                      <label class="huge"  th:text="${sum}"></label>
+                                      <br/>
+                                      <label>Votre Solde Annuelle</label>
+                                
+                                    
+                                </div>
+                            </div>
+                        </div>
+                       
+                    </div>
+                </div> 
+                <div class="col-lg-3 col-md-6">
+                    <div class="panel panel-yellow">
+                        <div class="panel-heading">
+                            <div class="row">
+                                <div class="col-xs-3">
+                                    <i class="fa fa-file-text fa-5x"></i>
+                                </div>
+                                <div class="col-xs-9 text-right">
+                                    <label class="huge" th:text="${count}"></label>
+                                      <br/>
+                                      <label>Vos demande</label>
+                                </div>
+                            </div>
+                        </div>
+                       
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="panel panel-green">
+                        <div class="panel-heading">
+                            <div class="row">
+                                <div class="col-xs-3">
+                                    <i class="fa fa-check fa-5x"></i>
+                                </div>
+                                <div class="col-xs-9 text-right">
+                                   <label class="huge" th:text="${do}"></label>
+                                      <br/>
+                                      <label>Vos demande accepter</label>
+                                </div>
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="panel panel-red">
+                        <div class="panel-heading">
+                            <div class="row">
+                                <div class="col-xs-3">
+                                    <i class="fa fa-warning fa-5x"></i>
+                                </div>
+                                <div class="col-xs-9 text-right">
+                                     <label class="huge" th:text="${dn}"></label>
+                                      <br/>
+                                      <label>Vos demande refuser</label>
+                                </div>
+                            </div>
+                        </div>
+                       
+                    </div>
+                </div>
+            </div>
+            <!-- /.row -->
+            <div class="row gr">
+                <div class="col-lg-8">
+                   
+                    <!-- /.panel -->
+                    <div class="panel panel-info">
+                        <div class="panel-heading">
+                            <i class="fa fa-clock-o fa-fw"></i> Actualité
+                        </div>
+                        <!-- /.panel-heading -->
+                        <div class="panel-body g">
+                            <ul class="timeline">
+                                <li>
+                                    <div class="timeline-badge"><i class="fa fa-check"></i>
+                                    </div>
+                                    <div class="timeline-panel gr">
+                                        <div class="timeline-heading">
+                                            <h4 class="timeline-title">Applications Nationales</h4>
+                                           
+                                        </div>
+                                        <div class="timeline-body">
+                                            <p> Développement des principales applications nationales, sectorielles et à usage commun au profit de plusieurs ministères et entreprises publiques</p>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="timeline-inverted">
+                                    <div class="timeline-badge warning"><i class="fa fa-credit-card"></i>
+                                    </div>
+                                    <div class="timeline-panel gr">
+                                        <div class="timeline-heading">
+                                            <h4 class="timeline-title"> Formations</h4>
+                                        </div>
+                                        <div class="timeline-body">
+                                            <p>Formation et Organisation de cycles de formation de différents niveaux et de séminaires d’expertise et de perfectionnement, au profit de la plupart des départements ministériels et organismes publics. </p>
+          
+                                        </div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="timeline-badge danger"><i class="fa fa-bomb"></i>
+                                    </div>
+                                    <div class="timeline-panel gr">
+                                        <div class="timeline-heading">
+                                            <h4 class="timeline-title">Open data</h4>
+                                        </div>
+                                        <div class="timeline-body">
+                                            <p>Le CNI met, sur son site WEB, à la disposition du public les informations et les documents administratifs dont l’accès est libre. </p>
+                                        </div>
+                                    </div>
+                                </li>
+                                 <li class="timeline-inverted">
+                                    <div class="timeline-badge success"><i class="fa fa-graduation-cap"></i>
+                                    </div>
+                                    <div class="timeline-panel gr">
+                                        <div class="timeline-heading">
+                                            <h4 class="timeline-title">Un centre de formation et de recyclage  </h4>
+                                        </div>
+                                        <div class="timeline-body">
+                                            <p>assurant des cycles de formation sur les applications nationales et sectorielles ainsi que les services de l'administration électronique, de même que des séminaires d'expertise et une formation continue en vue d'une promotion.</p>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="timeline-badge info"><i class="fa fa-save"></i>
+                                    </div>
+                                    <div class="timeline-panel gr">
+                                        <div class="timeline-heading">
+                                            <h4 class="timeline-title">Un Centre de Backup National</h4>
+                                        </div>
+                                        <div class="timeline-body">
+                                            <p>situé en dehors du Grand Tunis pour concrétiser le plan national de sécurisation des systèmes d'information nationaux et des grandes applications de l'Etat.</p>
+                                            
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="timeline-inverted">
+                                    <div class="timeline-badge success"><i class="fa fa-graduation-cap"></i>
+                                    </div>
+                                    <div class="timeline-panel gr">
+                                        <div class="timeline-heading">
+                                            <h4 class="timeline-title">Un Centre d’hébergement et de traitement de l’'information   </h4>
+                                        </div>
+                                        <div class="timeline-body">
+                                            <p>disposant de près de 50 serveurs  et d'un système de stockage hébergeant environ 30 bases de données aux quels sont connectés environ 4500 postes de travail implantés dans   l'administration au niveau central et régional.</p>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                    <!-- /.panel -->
+                </div>
+                <!-- /.col-lg-8 -->
+                <div class="col-lg-4 ">
+                    <div class="panel panel-info g">
+                        <div class="panel-heading">
+                            <i class="fa fa-bell fa-fw"></i> Reprise et Annulation demande
+                        </div>
+                        <!-- /.panel-heading -->
+                        <div class="panel-body">
+                            <div class="list-group">
+                               
+                                <a href="#" class="list-group-item">
+                                    employer a fait une reprise qui retourne le 20/05/2016
+                                </a>
+                               
+                            </div>
+                            <!-- /.list-group -->
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                    <!-- /.panel -->
+                   
+                    <!-- /.panel -->
+                    <div class="chat-panel panel panel-info g">
+                        <div class="panel-heading">
+                            <i class="fa fa-comments fa-fw"></i>  
+                            Publication
+                        </div>
+                        <!-- /.panel-heading -->
+                        <div class="panel-body">
+                            <ul class="chat">
+                                <li class="left clearfix">
+                                    <div class="chat-body clearfix gr">
+                                        <div class="header">
+                                            <strong class="primary-font">responsable</strong>
+                                        </div>
+                                        <p>
+                                           cette application est une solution, j'espert qu'elle atteind notre objectif
+                                        </p>
+                                    </div>
+                                </li>
+                                
+                               
+                            </ul>
+                        </div>
+                        <!-- /.panel-body -->
+                        <div class="panel-footer">
+                            <div class="input-group">
+                                <input id="btn-input" type="text" class="form-control input-sm" placeholder="Type your message here..." />
+                                <span class="input-group-btn">
+                                    <button class="btn btn-warning btn-sm" id="btn-chat">
+                                        envoyer
+                                    </button>
+                                </span>
+                            </div>
+                        </div>
+                        <!-- /.panel-footer -->
+                    </div>
+                    <!-- /.panel .chat-panel -->
+                </div>
+                <!-- /.col-lg-4 -->
+            </div>
+            <!-- /.row -->
+        </div>
+        <!-- /#page-wrapper -->
+
+    </div>
+    <!-- /#wrapper -->
+
+    <!-- jQuery -->
+    <script src="../bower_components/jquery/dist/jquery.min.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="../bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+
+    <!-- Metis Menu Plugin JavaScript -->
+    <script src="../bower_components/metisMenu/dist/metisMenu.min.js"></script>
+
+    <!-- Morris Charts JavaScript -->
+    <script src="../bower_components/raphael/raphael-min.js"></script>
+    <script src="../bower_components/morrisjs/morris.min.js"></script>
+    <script src="../js/morris-data.js"></script>
+
+    <!-- Custom Theme JavaScript -->
+    <script src="../dist/js/sb-admin-2.js"></script>
+
+</body>
+
+</html>

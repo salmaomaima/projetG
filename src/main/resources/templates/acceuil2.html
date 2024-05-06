@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>AirTravel</title>
+    <link   rel="stylesheet" type="text/css" href="../static/css/style.css"
+     th:href="@{css/style.css}"/>
+    <style>
+        .centered-text {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    
+    <header>
+        <div class="logo">
+            <a th:href="@{acceuil2}"> <span>MON</span>CONGÉ</a>
+        </div>
+        <ul class="menu">
+            <li><a href="#">Acceuil</a></li>
+            <li><a  th:href="@{login}">se connecter</a></li>
+            <li><a href="#a-propos">à propos</a></li>
+            <li><a href="#popular-destination">nos service</a></li>
+            <li><a href="#contact">contact</a></li>
+        </ul>
+        
+
+        <div class="responsive-menu"></div>
+    </header>
+    <!-- acceuil section -->
+    <section id="home">
+        <h2>le site mon congé</h2>
+        <h4>Facilitez vos demandes de congés</h4>
+        <p class="centered-text">Bienvenue sur "Mon Congé", votre plateforme en ligne pour simplifier vos demandes de congés. 
+           Nous comprenons l'importance de pouvoir gérer vos congés de manière efficace et sans tracas.
+           Avec notre interface conviviale et intuitive, 
+           vous pouvez soumettre vos demandes de congés en quelques clics, où que vous soyez. </p>
+        
+    </section>
+
+    <!-- A propos section -->
+    <section id="a-propos">
+        <h1 class="title">à propos</h1>
+        <div class="img-desc">
+           <div class="left">
+               <video src="images/video.mp4" autoplay="autoplay" loop="loop"></video>
+
+           </div>
+            <div class="right">
+                <h3>À propos de MONCONGÉ</h3>
+                <p>Bienvenue chez MONCONGÉ, votre solution complète de gestion des congés. Notre mission est de simplifier et de rationaliser le processus de gestion des congés pour notre entreprise<br/>
+                en offrant une plateforme conviviale et efficace pour gérer les demandes de congés de manière transparente et efficace.</p>
+                <a href="#">Lire Plus</a>
+            </div>
+        </div>
+        
+    </section>
+
+    <!-- section destination -->
+    <section id="popular-destination">
+        <h1 class="title">Nos Services</h1>
+        <div class="content">
+            <!-- box -->
+            <div class="box">
+                <img src="images/télécharger.jpeg" alt=""/>
+                <div class="content">
+                    <div>
+                        <h4>Demande de congé en ligne</h4>
+                        <p>Permettre aux employés de soumettre leurs demandes de congé directement via le site</p>
+                        <p>en spécifiant les dates de début et de fin, ainsi que le type de congé (congé payé, congé maladie, congé parental, etc.).</p>
+                        <a href="#">Lire Plus</a>
+                    </div>
+                </div>
+            </div>
+            <!-- box -->
+            <!-- box -->
+            <div class="box">
+                <img src="images/R.jpeg" alt=""/>
+                <div class="content">
+                    <div>
+                        <h4>Validation et suivi des demandes</h4>
+                        <p>Permettre aux gestionnaires de valider,</p>
+                        <p> rejeter ou demander des modifications aux demandes de congé soumises par les employés.</p>
+                        <a href="#">Lire Plus</a>
+                    </div>
+                </div>
+            </div>
+            <!-- box -->
+            <!-- box -->
+            <div class="box">
+                <img src="images/miami.jpg" alt=""/>
+                <div class="content">
+                    <div>
+                        <h4>Notification par e-mail</h4>
+                        <p>Envoyer automatiquement des notifications par e-mail aux employés et aux gestionnaires pour informer des demandes de congé soumises,</p>
+                        <p> des décisions prises et des changements apportés aux calendriers.</p>
+                        <a href="#">Lire Plus</a>
+                    </div>
+                </div>
+            </div>
+            <!-- box -->
+             <!-- box -->
+             <div class="box">
+                <img src="images/los-angeles.jpg" alt=""/>
+                <div class="content">
+                    <div>
+                        <h4>Calendrier des congés</h4>
+                        <p> Afficher un calendrier global des congés pour l'ensemble de l'entreprise, </p>
+                        <p>montrant les congés approuvés, les jours fériés et les absences planifiées.</p>
+                        <a href="#">Lire Plus</a>
+                    </div>
+                </div>
+            </div>
+            <!-- box -->
+             <!-- box -->
+             <div class="box">
+                <img src="images/R1.jpeg" alt=""/>
+                <div class="content">
+                    <div>
+                        <h4>Gestion des soldes de congés</h4>
+                        <p> Permettre aux employés de consulter leur solde de congés disponibles,</p>
+                        <p>en prenant en compte les congés déjà pris et les congés à venir.</p>
+                        <a href="#">Lire Plus</a>
+                    </div>
+                </div>
+            </div>
+            <!-- box -->
+             <!-- box -->
+             <div class="box">
+                <img src="images/OIP.jpeg" alt=""/>
+                <div class="content">
+                    <div>
+                        <h4>Personnalisation et paramètres</h4>
+                        <p>Offrir des options de personnalisation pour les politiques de congé de l'entreprise,</p>
+                        <p> les types de congé disponibles, les workflows d'approbation, etc.</p>
+                        <a href="#">Lire Plus</a>
+                    </div>
+                </div>
+            </div>
+            <!-- box -->
+        </div>
+    </section>
+
+    <!--  contact section -->
+    <!--  contact section -->
+    <section id="contact">
+        <h1 class="title">Contact</h1>
+        <form action="">
+            <div class="left-right">
+                <div class="left">
+                    <label>Nom Complet</label>
+                    <input type="text"/>
+                    <label>Objet</label>
+                    <input type="text"/>
+                    <label>Email</label>
+                    <input type="text"/>
+                    <label>Message</label>
+                    <textarea name="" id="" cols="30" rows="10"></textarea>
+                </div>
+                <div class="right">
+                    <label>Numéro</label>
+                    <input type="text"/>
+                    <label>Date</label>
+                    <input type="text"/>
+                    <label>Autres Details</label>
+                    <input type="text"/>
+                    <label>Adresse</label>
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2624.9916256937595!2d2.292292615509614!3d48.85837007928746!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47e66e2964e34e2d%3A0x8ddca9ee380ef7e0!2sTour%20Eiffel!5e0!3m2!1sfr!2sfr!4v1647531560805!5m2!1sfr!2sfr" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+                </div>
+            </div>
+            <button>Envoyer</button>
+        </form>
+    </section>
+
+    <footer>
+        <p> Réalisé par <span>monconge</span> </p>
+    </footer>
+
+
+    <script>
+        var toggle_menu = document.querySelector('.responsive-menu');
+        var menu = document.querySelector('.menu');
+        toggle_menu.onclick= function(){
+             toggle_menu.classList.toggle('active');
+             menu.classList.toggle('responsive')
+        }
+    </script>
+
+</body>
+</html>

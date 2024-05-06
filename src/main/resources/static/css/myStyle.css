@@ -1,0 +1,49 @@
+.spacer-ts {
+	margin-top: 20px;
+}
+.spacer-tm {
+	margin-top: 40px;
+}
+.spacer-tg {
+	margin-top: 60px;
+}
+
+.spacer-ls {
+	margin-left: 20px;
+}
+.spacer-lm {
+	margin-left: 40px;
+}
+.spacer-lg {
+	margin-left: 60px;
+}
+
+.spacer-rs {
+	margin-right: 20px;
+}
+.spacer-rm {
+	margin-right: 40px;
+}
+.spacer-rg {
+	margin-right: 60px;
+}
+
+.bold{
+	font-weight : bold;
+}
+
+.tc{
+	text-align: center;
+}
+
+.bk{
+	background-color: #B6CDEA;
+}
+
+.gr{
+	background-color: #FDFDFD;
+}
+
+.g{
+	background-color: #FBFCFE;
+}
