@@ -22,6 +22,10 @@ public class Archive implements Serializable {
 	private Long id_admin;
 	
 	private Date date_archive;
+	
+	
+	private String dt; 
+	
 
 	public Long getId_archive() {
 		return id_archive;
