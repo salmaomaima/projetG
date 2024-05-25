@@ -664,6 +664,9 @@ public class LienControlle {
 		
 		List<Demande>dem_cant_annuler=demande.cant_annul(ep.getId_employer(),new Date(),'a');		
 		model.addAttribute("dem_cant_annuler",dem_cant_annuler);
+		List<Demande>dem=demande.find_id_employer(ep.getId_employer());
+		model.addAttribute("dem",dem);
+
 		
 		List<Validation> noti=validation.find_by_id_rd(ep.getId_employer(),'p');
 		model.addAttribute("notif",noti);

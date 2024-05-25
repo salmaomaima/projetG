@@ -43,49 +43,11 @@
          <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
            <div class="navbar-header">
                 
-                <label class="navbar-brand">Centre National de l'Informatique</label>
+                <label class="navbar-brand"><span>MON</span>CONGÉ</label>
             </div>
 
              <ul class="nav navbar-top-links navbar-right">
-             
-              <!-- notification responsable direct -->
-               <li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                        <i class="fa fa-envelope fa-fw"></i>  <i class="fa fa-caret-down"></i>
-                    </a>
-                    
-                    <ul class="dropdown-menu dropdown-messages">
-                       <li th:each="n:${notif}" >
-                        <form th:action="demande_N1_rh" method="get" name="djo">
-                            <button type="submit" class="btn btn-default btn-block">Demande N° <input type="hidden" name="ntf" th:text= "${n.id_validation}" th:value= "${n.id_validation}"/></button>
-                        </form>
-                        </li>
-                        <li class="divider"></li>
-                        
-                    </ul>
-                  
-                </li>
-        
-               <!-- notification premier responsable -->
-                <li class="dropdown">
-               		  <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                        <i class="fa fa-tasks fa-fw"></i>  <i class="fa fa-caret-down"></i>
-                    </a>
-                    
-                   
-                    <ul class="dropdown-menu dropdown-tasks">
-                        <li th:each="v:${valid}" >
-                        <form th:action="demande_N2_rh" method="get" name="djo">
-                        <button type="submit" value="supprimer" class="btn btn-default btn-block">Demande N°<input type="hidden" name="vld" th:text= "${v.id_validation}" th:value= "${v.id_validation}"/></button> 
-                        </form>
-                        </li>
-                        <li class="divider"></li>
-                       
-                        
-                    </ul>
-         
-                </li>
-                
+
                 
                 <!-- demande confirmer -->
               <li class="dropdown">

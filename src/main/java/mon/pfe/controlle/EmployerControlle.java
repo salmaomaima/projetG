@@ -2,6 +2,7 @@ package mon.pfe.controlle;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -59,100 +60,94 @@ public class EmployerControlle {
 	public SoldeRepository solde;
 	@Secured(value={"ROLE_RD","ROLE_EM","ROLE_RH","ROLE_PR"})
 	@SuppressWarnings("deprecation")
-	@RequestMapping(value="/remplir_demande_acteur" , method=RequestMethod.GET)
-	public String remplir_demande(String date_envoit, String date_debut, int periode, Long id_employer,
-			int id_type, Model model, HttpServletRequest httpServletRequest){
-		
-int d=demande.count_demande_en_cours(id_employer, 'p');
-		
-		String username=log.getLogedUser(httpServletRequest);
-		model.addAttribute("username",username);
-		List<Employer> ep=employer.find_by_nom_utilisateur(username);
-		Employer emp=ep.get(0);
-		List<Validation> noti=validation.find_by_id_rd(emp.getId_employer(),'p');
-		model.addAttribute("notif",noti);
-		List<Validation>valid=validation.find_by_id_pr(emp.getId_employer(),'p');
-		model.addAttribute("valid",valid);
-		
-		TypeCongee ty=typecongee.findOne(id_type);
-		
-		if(d<1){
-			
+	@RequestMapping(value="/remplir_demande_acteur", method=RequestMethod.GET)
+	public String remplir_demande(
+			String date_envoit,
+			String date_debut,
+			int periode,
+			Long id_employer,
+			int id_type,
+			Model model,
+			HttpServletRequest httpServletRequest
+	) {
+		// Obtenir le nom d'utilisateur de la session
+		String username = log.getLogedUser(httpServletRequest);
+		model.addAttribute("username", username);
+
+		// Récupérer l'employé associé à l'utilisateur
+		List<Employer> ep = employer.find_by_nom_utilisateur(username);
+		Employer emp = ep.get(0);
+
+		// Récupérer les notifications et les validations associées à l'employé
+		List<Validation> noti = validation.find_by_id_rd(emp.getId_employer(), 'p');
+		model.addAttribute("notif", noti);
+		List<Validation> valid = validation.find_by_id_pr(emp.getId_employer(), 'p');
+		model.addAttribute("valid", valid);
+
+		// Récupérer le type de congé associé à l'ID
+		TypeCongee ty = typecongee.findOne(id_type);
+
+		// Vérifier si l'employé a déjà une demande en cours
+		int d = demande.count_demande_en_cours(id_employer, 'p');
+
+		if (d < 1) {
+			// Récupérer l'année actuelle
 			SimpleDateFormat format = new SimpleDateFormat("yyyy");
-			int annee= Integer.parseInt(format.format(new Date()));
-			
-			Solde s1= solde.find_by_id_employer_anne(emp.getId_employer(), annee);
-			Solde s2= solde.find_by_id_employer_anne(emp.getId_employer(), (annee-1));
-			long i = s1.getTotal_solde()+s2.getTotal_solde();
-			
+			int annee = Integer.parseInt(format.format(new Date()));
+
+			// Calculer le solde total de congé annuel
+			Solde s1 = solde.find_by_id_employer_anne(emp.getId_employer(), annee);
+			Solde s2 = solde.find_by_id_employer_anne(emp.getId_employer(), (annee - 1));
+			long i = s1.getTotal_solde() + s2.getTotal_solde();
+
+			// Parser les dates de début et d'envoi
 			SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-			
-		
-		
-			
 			Date de = null;
 			Date dd = null;
 			try {
-				 de = formatter.parse(date_envoit);
-				 dd=formatter.parse(date_debut);
+				de = formatter.parse(date_envoit);
+				dd = formatter.parse(date_debut);
 			} catch (ParseException e) {
 				e.printStackTrace();
 			}
-			if((i<periode)&&(ty.getCode_type().equals("1111"))){
-				
-				String chaine ="votre solde annuelle inssfisonte vous ne pouvez pas passer cette demande ";
-				model.addAttribute("chaine",chaine);
-			}
-			
-			else {
-				
-				
-				
-				if(periode>ty.getNmbre_jours())
-				{
-					String chaine ="periode de conger demander depasse le max de cette type de conge ";
-					model.addAttribute("chaine",chaine);
+
+			// Vérifier les conditions pour la demande de congé
+			if ((i < periode) && (ty.getCode_type().equals("1111"))) {
+				String chaine = "Votre solde annuelle est insuffisante pour cette demande.";
+				model.addAttribute("chaine", chaine);
+			} else {
+				// Calculer la date de fin en ajoutant la période à la date de début
+				Calendar calendar = Calendar.getInstance();
+				calendar.setTime(dd);
+				calendar.add(Calendar.DAY_OF_MONTH, periode);
+				Date df = calendar.getTime();
+
+				// Enregistrer la nouvelle demande de congé
+				demande.save(new Demande(de, dd, df, periode, id_employer, id_type, 'p'));
+				Demande dem = demande.demande_en_cours(id_employer, 'p');
+
+				// Enregistrer la validation de la demande
+				try {
+					validation.save(new Validation(formatter.parse(formatter.format(new Date())), dem.getId_demande(), id_employer, emp.getIdresponsable(), 'p'));
+				} catch (ParseException e) {
+					e.printStackTrace();
 				}
-				else{
-			
-				Date df=dd;
-				 df.setDate(df.getDate()+periode);	
-					demande.save(new Demande(de,dd,df,periode,id_employer,id_type,'p'));
-					
-					Demande dem = demande.demande_en_cours(id_employer, 'p');
-					
-//					Date date_validation_rd, Long id_demande, Long id_employer, Long id_resposable, char action_rd
-					
-					try {
-						validation.save(new Validation(formatter.parse(formatter.format(new Date())),dem.getId_demande(),id_employer,emp.getIdresponsable(),'p'));
-					} catch (ParseException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-					
-					String chaine ="votre demande est en cours d'execution ...";
-					model.addAttribute("chaine",chaine);
-				}
+
+				String chaine = "Votre demande est en cours de traitement.";
+				model.addAttribute("chaine", chaine);
 			}
-			
-			
+		} else {
+			String chaine = "Vous avez déjà une demande en cours de traitement.";
+			model.addAttribute("chaine", chaine);
 		}
-		
-		else {
-			String chaine ="vous avez une demande en cours d'execution vous pouvez pas affecter autre";
-			model.addAttribute("chaine",chaine);
-		}
-		
-		
-		List<Validation> arch= validation.find_to_archive('p'); 
-		model.addAttribute("arch",arch);
-		
-	
-	
+
+		// Récupérer les validations à archiver
+		List<Validation> arch = validation.find_to_archive('p');
+		model.addAttribute("arch", arch);
 
 		return "etat_demande";
 	}
-	
+
 	@Secured(value={"ROLE_RD","ROLE_EM","ROLE_RH","ROLE_PR"})
 	@RequestMapping(value="/demande_N1" , method=RequestMethod.GET)
 	public String demande_n1(Long ntf, Model model, HttpServletRequest httpServletRequest){
@@ -188,7 +183,7 @@ int d=demande.count_demande_en_cours(id_employer, 'p');
 		model.addAttribute("v",notif);
 		return "demande_N1";
 	}
-	@Secured(value={"ROLE_RH","ROLE_PR"})
+	@Secured(value={"ROLE_RH","ROLE_PR","ROLE_RD"})
 	@RequestMapping(value="/validation_N1" , method=RequestMethod.GET)
 	public String validation_N1(@RequestParam(required=true, value="action")String bt,Long id_validation,Long id_employer, Long id_demande,Long id_responsable, String avis_rd,
 				Long id_remplacant,String date_validation_rd, Model model, HttpServletRequest httpServletRequest){		
@@ -480,19 +475,19 @@ int d=demande.count_demande_en_cours(id_employer, 'p');
 	int annee= Integer.parseInt(year.format(new Date()));
 	Solde s1= solde.find_by_id_employer_anne(emp.getId_employer(), annee);
 	
-	if(type.getCode_type()=="011100"){
+	if(type.getCode_type().equals("011100")){
 		solde.save(new Solde(s1.getId_Solde(), s1.getTotal_solde(), s1.getSolde_materniter(), s1.getSolde_specifique(), d.getPeriode()+s1.getSolde_maladie() , s1.getAnnee_solde(), s1.getId_employer(), s1.getMise_a_jours()));
 	}
 	
-	if(type.getCode_type()=="000110"){
+	if(type.getCode_type().equals("000110")){
 		solde.save(new Solde(s1.getId_Solde(), s1.getTotal_solde(), s1.getSolde_materniter(), s1.getSolde_specifique()+d.getPeriode(), s1.getSolde_maladie() , s1.getAnnee_solde(), s1.getId_employer(), s1.getMise_a_jours()));
 	}
 	
-	if(type.getCode_type()=="111100"){
+	if(type.getCode_type().equals("111100")){
 		solde.save(new Solde(s1.getId_Solde(), s1.getTotal_solde(), s1.getSolde_materniter()+d.getPeriode(), s1.getSolde_specifique(), s1.getSolde_maladie() , s1.getAnnee_solde(), s1.getId_employer(), s1.getMise_a_jours()));
 	}
 	
-	if(type.getCode_type()=="011110"){
+	if(type.getCode_type().equals("011110")){
 		
 		Solde s2= solde.find_by_id_employer_anne(emp.getId_employer(), (annee-1));
 			if(s2.getTotal_solde()==0){

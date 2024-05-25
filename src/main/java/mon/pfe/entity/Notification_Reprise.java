@@ -20,8 +20,10 @@ public class Notification_Reprise implements Serializable{
 	private Long id_demande;
 	private Date date_retour;
 	private Date date_envoit;
-	
-	
+
+	public Notification_Reprise() {
+	}
+
 	public Long getId_reprise() {
 		return id_reprise;
 	}

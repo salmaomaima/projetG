@@ -149,23 +149,31 @@ public class Ressource_Humaine_Controller {
 	 return "modif_profil_rh";
  }
 	@Secured({"ROLE_RH", "ROLE_PR"})
-	@RequestMapping(value="/ajouter_departement" , method=RequestMethod.GET)
-	public String ajouter_departement(Long id_chef, String nom_departement, Model model, HttpServletRequest httpServletRequest){
-		departement.save(new Departement(id_chef,nom_departement));
-		String username=log.getLogedUser(httpServletRequest);
-		model.addAttribute("username",username);
+	@RequestMapping(value="/ajouter_departement", method=RequestMethod.GET)
+	public String ajouter_departement(Long id_chef, String nom_departement, Model model, HttpServletRequest httpServletRequest) {
+		try {
+			departement.save(new Departement(id_chef, nom_departement));
+		} catch (Exception e) {
+			e.printStackTrace();
+			model.addAttribute("error", "Failed to add department: " + e.getMessage());
+			return "error"; // Assume there's an error page to show the error
+		}
+		String username = log.getLogedUser(httpServletRequest);
+		model.addAttribute("username", username);
 		List<Departement> list = departement.findAll();
-	model.addAttribute("dep",list);
-	List<Employer> ep=employer.find_by_nom_utilisateur(username);
-	Employer emp=ep.get(0);
-	List<Validation> noti=validation.find_by_id_rd(emp.getId_employer(),'p');
-	model.addAttribute("notif",noti);
-	List<Validation>valid=validation.find_by_id_pr(emp.getId_employer(),'p');
-	model.addAttribute("valid",valid);
-	List<Validation> arch= validation.find_to_archive('p'); 
-	model.addAttribute("arch",arch);
+		model.addAttribute("dep", list);
+		List<Employer> ep = employer.find_by_nom_utilisateur(username);
+		Employer emp = ep.get(0);
+		List<Validation> noti = validation.find_by_id_rd(emp.getId_employer(), 'p');
+		model.addAttribute("notif", noti);
+		List<Validation> valid = validation.find_by_id_pr(emp.getId_employer(), 'p');
+		model.addAttribute("valid", valid);
+		List<Validation> arch = validation.find_to_archive('p');
+		model.addAttribute("arch", arch);
 		return "list_departement";
 	}
+
+
 	@Secured({"ROLE_RH", "ROLE_PR"})
 	@RequestMapping(value="/modifier_departement" , method=RequestMethod.GET)
 	public String modifier_departement(int id_departement, Long id_chef, String nom_departement, Model model, HttpServletRequest httpServletRequest){

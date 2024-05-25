@@ -18,21 +18,6 @@ public class MonPfeApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(MonPfeApplication.class, args);
 		
-		
-	//Long i=(long) 1;
-	//BCryptPasswordEncoder encoder=new BCryptPasswordEncoder(12);
-	//String h=encoder.encode("hedi");
-	//	String h1=encoder.encode("houissa");
-	//String h2=encoder.encode("hedi");
-	
-	//dao.save(new Employer(h,"mot_de_passe","adresse","11253","grade","nom","prenom",i,1,1));
-	//dao.save(new Employer(h1,"mot_de_passe","adresse","11253","grade","nom","prenom",i,1,1));
-	//dao.save(new Employer(h2,"mot_de_passe","adresse","11253","grade","nom","prenom",i,1,1));
-
-	//Md5PasswordEncoder encoderr = new Md5PasswordEncoder();
-//	String h="hediabirhouissa@lai3bhediisima";
-	//System.out.println(encoder.encodePassword(h,16));
-		
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 		SimpleDateFormat month = new SimpleDateFormat("MM");
 		

@@ -50,60 +50,11 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <label class="navbar-brand" th:text="${username}"></label>
+                <label class="navbar-brand" th:text="${nomPrenom}"></label>
             </div>
             <!-- /.navbar-header -->
 
              <ul class="nav navbar-top-links navbar-right">
-             
-               <!-- notification responsable direct -->
-               <li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                        <i class="fa fa-envelope fa-fw"></i>  <i class="fa fa-caret-down"></i>
-                    </a>
-                    
-                    <ul class="dropdown-menu dropdown-messages">
-                       <li th:each="n:${notif}" >
-                        <form th:action="demande_N1" method="get" name="djo">
-                            <button type="submit" class="btn btn-default btn-block">Demande N° <input type="hidden" name="ntf" th:text= "${n.id_validation}" th:value= "${n.id_validation}"/></button>
-                        </form>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
-                            <a class="text-center" href="#">
-                                <strong>Read All Messages</strong>
-                                <i class="fa fa-angle-right"></i>
-                            </a>
-                        </li>
-                    </ul>
-                  
-                </li>
-        
-               <!-- notification premier responsable -->
-                <li class="dropdown">
-               		  <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                        <i class="fa fa-tasks fa-fw"></i>  <i class="fa fa-caret-down"></i>
-                    </a>
-                    
-                   
-                    <ul class="dropdown-menu dropdown-tasks">
-                        <li th:each="v:${valid}" >
-                        <form th:action="demande_N2" method="get" name="djo">
-                        <button type="submit" value="supprimer" class="btn btn-default btn-block">Demande N°<input type="hidden" name="vld" th:text= "${v.id_validation}" th:value= "${v.id_validation}"/></button> 
-                        </form>
-                        </li>
-                        <li class="divider"></li>
-                       
-                        <li>
-                            <a class="text-center" href="#">
-                                <strong>See All Tasks</strong>
-                                <i class="fa fa-angle-right"></i>
-                            </a>
-                        </li>
-                    </ul>
-         
-                </li>
-                
                 
                 <li class="dropdown">
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#">

@@ -85,60 +85,11 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <label class="navbar-brand" th:text="${username}"></label>
+                <label class="navbar-brand" ><span>MON</span>CONGÉ</label>
             </div>
             <!-- /.navbar-header -->
 
             <ul class="nav navbar-top-links navbar-right">
-             
-              <!-- notification responsable direct -->
-               <li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                        <i class="fa fa-envelope fa-fw"></i>  <i class="fa fa-caret-down"></i>
-                    </a>
-                    
-                    <ul class="dropdown-menu dropdown-messages">
-                       <li th:each="n:${notif}" >
-                        <form th:action="demande_N1" method="get" name="djo">
-                            <button type="submit" class="btn btn-default btn-block">Demande N° <input type="hidden" name="ntf" th:text= "${n.id_validation}" th:value= "${n.id_validation}"/></button>
-                        </form>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
-                            <a class="text-center" href="#">
-                                <strong>Read All Messages</strong>
-                                <i class="fa fa-angle-right"></i>
-                            </a>
-                        </li>
-                    </ul>
-                  
-                </li>
-        
-               <!-- notification premier responsable -->
-                <li class="dropdown">
-               		  <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                        <i class="fa fa-tasks fa-fw"></i>  <i class="fa fa-caret-down"></i>
-                    </a>
-                    
-                   
-                    <ul class="dropdown-menu dropdown-tasks">
-                        <li th:each="v:${valid}" >
-                        <form th:action="demande_N2" method="get" name="djo">
-                        <button type="submit" value="supprimer" class="btn btn-default btn-block">Demande N°<input type="hidden" name="vld" th:text= "${v.id_validation}" th:value= "${v.id_validation}"/></button> 
-                        </form>
-                        </li>
-                        <li class="divider"></li>
-                       
-                        <li>
-                            <a class="text-center" href="#">
-                                <strong>See All Tasks</strong>
-                                <i class="fa fa-angle-right"></i>
-                            </a>
-                        </li>
-                    </ul>
-         
-                </li>
-                
                 
                 <li class="dropdown">
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#">
@@ -210,7 +161,7 @@
         <div id="page-wrapper">
             <div >
                 <div class="col-lg-12">
-                    <h5 class="page-header">Centre National de l'Informatique <br/>  Département de la gestion</h5>
+                    <h5 class="page-header"> Département de la gestion</h5>
                 </div>
                 <!-- /.col-lg-12 -->
             </div>
@@ -284,109 +235,10 @@
 										 
 									 </table>
 									</div> 
-									
-									
-									
-									
-									
-									
-					<!-- 				
-						 <div class="row">			
-						<br />
-						<br />
-						<hr />
-						<table class="col-lg-12 "  th:each="e:${emp}">
-						<tr>
-						<td colspan="7"><center><h4><b>organisme responsable</b></h4></center></td></tr>
-					<tr><td colspan="7"><center><h4><b>Responsable Directe</b></h4></center></td></tr>
-					<tr>
-	<td>Nom de responsable :</td><td> <input class="form-control" type="text" name="nom" placeholder="nom de responsable" />	</td></tr><br/>			
-					<tr>
-					<td>Avis:
-					<br/><textarea  class="form-control" name="le-message" rows="6" cols="40" placeholder="Vous pouvez saisir ici votre avis." ></textarea></td></tr>
-					<td>Aide Adjoint pour la periode de congé :</td>
-				<td>	<input class="form-control" type="text" name="nom1" placeholder="le aide adjoint" /></td>
-		  <tr>
-                   <td>La date :</td>
-			<td> <input class="form-control" type="date" name="date" /></td></tr><br/><br/>
-			 
-			 <tr>
-			<br /><br />								 <td><center><button type="submit" class="btn btn-default" >Envoyer</button></center></td>
-											 <td><center><button type="reset" class="btn btn-default"  >Reset</button></center></td>
-											 </tr> 
-											 
-						</table>			 	
-		
-		 </div> -->
-		
-		
-	
-	                         
-	                         
-	                         
-	                         
-	                         
-	    <!--  <div class="row">                    
-	                         
-	     <br />
-						<br />
-						<hr />
-						<table class="col-lg-12"  th:each="e:${emp}">
-						<tr>
-						<td colspan="3"><center><h4><b>Organisme Responsable</b></h4></center></td></tr>
-					<tr><td colspan="3"><center><h4><b> Premier Responsable</b></h4></center></td></tr>
-					<tr>
-	<td>Nom de responsable :</td><td> <input class="form-control" type="text" name="nom" placeholder="nom de responsable"/>	</td></tr><br/>			
-					<tr>
-					<td>Avis:
-					<br/><textarea  class="form-control" name="le-message" rows="6" cols="40" placeholder="Vous pouvez saisir ici votre avis."></textarea></td></tr>
-				
-			  <tr>
-                   <td>La date :</td>
-			<td> <input class="form-control" type="date" name="date" /></td></tr><br/><br/>
-			 	
-		  <tr>
-			<br/><br/>								 <td><center><button type="submit" class="btn btn-default"  >Envoyer</button></center></td>
-											 <td><center><button type="reset" class="btn btn-default" >Reset</button></center></td>
-											 </tr> 
-						</table>
-							                    
-	                    		   
-	                       
-	                     </div>   -->
+
 	              <hr />         
 	                       
-<!-- <div class="row">	                       
-  <br />
-						<br />
-				
-						<table class="col-lg-12"  th:each="e:${emp}" >
-						<tr>
-						<td colspan="3"><center><h4><b>Spécialement pour le Ressource humaine</b></h4></center></td></tr>
-	<tr>
-	<td>Nom de responsable :</td><td> <input class="form-control" type="text" name="nom" placeholder="nom de responsable" id="disabledInput" disabled="disabled" />	</td></tr>
-	<tr>
-	<td>Les détails de droits de l'employer poue le congé de l'années : </td></tr><br/>				
-	<tr><td>l'années derniere :</td>
-			<td> <input class="form-control" type="text" name="date" placeholder="inserer la date" id="disabledInput" disabled="disabled"/></td></tr>
-	<tr><td>l'années actuel:</td>	
-			<td><input class="form-control" type="text" name="date" placeholder="inserer la date" id="disabledInput" disabled="disabled"/></td></tr>
-		<tr><td>total de solde:</td>	
-		<td><input class="form-control" type="text" name="solde" id="disabledInput" disabled="disabled"/></td></tr>	
-		<tr><td>Periode de congés souhaiter:</td>	
-		<td><input class="form-control" type="text" name="periode" id="disabledInput" disabled="disabled"/></td></tr>			
-	<tr><td>le reste de solde:</td>	
-	<td><input class="form-control" type="text" name="reste" id="disabledInput" disabled="disabled"/></td>	</tr>	
-			  <tr>
-                   <td>La date :</td>
-			<td> <input class="form-control" type="date" name="date" id="disabledInput" disabled="disabled"/></td></tr><br/><br/>
-			 	
-		  <tr>
-			<br/><br/>								 <td><center><button type="submit" class="btn btn-default" disabled="disabled">Envoyer</button></center></td>
-											 <td><center><button type="reset" class="btn btn-default" disabled="disabled">Reset</button></center></td>
-											 </tr>		
-						</table>	                                    
-                          </div>          -->   
+
                                        
                                         
                                    </form>
