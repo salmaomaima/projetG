@@ -85,7 +85,7 @@ public class EmployerControlle {
 		model.addAttribute("valid", valid);
 
 		// Récupérer le type de congé associé à l'ID
-		TypeCongee ty = typecongee.findOne(id_type);
+		TypeCongee ty = typecongee.findById(id_type).orElse(null);
 
 		// Vérifier si l'employé a déjà une demande en cours
 		int d = demande.count_demande_en_cours(id_employer, 'p');
@@ -165,12 +165,12 @@ public class EmployerControlle {
 		List<Validation>valid=validation.find_by_id_pr(emp.getId_employer(),'p');
 		model.addAttribute("valid",valid);
 		
-		Validation notif=validation.findOne(ntf);
-		Employer emp_env=employer.findOne(notif.getId_employer());
-		Employer rd=employer.findOne(notif.getId_responsable());
-		Demande dem=demande.findOne(notif.getId_demande());
-		TypeCongee type=typecongee.findOne(dem.getId_type());
-		Departement dp=departement.findOne(emp_env.getId_departement());
+		Validation notif=validation.findById(ntf).orElse(null);
+		Employer emp_env=employer.findById(notif.getId_employer()).orElse(null);
+		Employer rd=employer.findById(notif.getId_responsable()).orElse(null);
+		Demande dem=demande.findById(notif.getId_demande()).orElse(null);
+		TypeCongee type=typecongee.findById(dem.getId_type()).orElse(null);
+		Departement dp=departement.findById(emp_env.getId_departement()).orElse(null);
 		
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 		Date dt=new Date();
@@ -188,10 +188,10 @@ public class EmployerControlle {
 	public String validation_N1(@RequestParam(required=true, value="action")String bt,Long id_validation,Long id_employer, Long id_demande,Long id_responsable, String avis_rd,
 				Long id_remplacant,String date_validation_rd, Model model, HttpServletRequest httpServletRequest){		
 		
-		Employer emp =employer.findOne(id_employer);
-		Departement dep =departement.findOne(emp.getId_departement());
+		Employer emp =employer.findById(id_employer).orElse(null);
+		Departement dep =departement.findById(emp.getId_departement()).orElse(null);
 	
-		Validation vali=validation.findOne(id_validation);
+		Validation vali=validation.findById(id_validation).orElse(null);
 		 if(vali.getAction_rd()=='p'){
 		
 		 if (bt.equals("accepter")){
@@ -216,7 +216,7 @@ public class EmployerControlle {
 			
 			 
 			 
-			 Demande dem = demande.findOne(id_demande);
+			 Demande dem = demande.findById(id_demande).orElse(null);
 			
 				demande.save(new Demande(dem.getId_demande(),dem.getDate_envoit(),dem.getDate_debut(),dem.getDate_fin(),dem.getPeriode(),dem.getId_employer(),dem.getId_type(),'n'));
 				String chaine =" votre refus a ete bien saisi";
@@ -256,13 +256,13 @@ public class EmployerControlle {
 		
 		
 		
-		Validation valid=validation.findOne(vld);
-		Employer emp_env=employer.findOne(valid.getId_employer());
-		Employer rd=employer.findOne(valid.getId_responsable());
-		Employer pr=employer.findOne(valid.getId_premier_responsable());
-		Employer rp=employer.findOne(valid.getId_remplaçant());
-		Demande dem=demande.findOne(valid.getId_demande());
-		TypeCongee type=typecongee.findOne(dem.getId_type());
+		Validation valid=validation.findById(vld).orElse(null);
+		Employer emp_env=employer.findById(valid.getId_employer()).orElse(null);
+		Employer rd=employer.findById(valid.getId_responsable()).orElse(null);
+		Employer pr=employer.findById(valid.getId_premier_responsable()).orElse(null);
+		Employer rp=employer.findById(valid.getId_remplaçant()).orElse(null);
+		Demande dem=demande.findById(valid.getId_demande()).orElse(null);
+		TypeCongee type=typecongee.findById(dem.getId_type()).orElse(null);
 		
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 		Date dt=new Date();
@@ -291,10 +291,10 @@ public class EmployerControlle {
 	List<Employer> empl=employer.find_by_nom_utilisateur(username);
 	Employer emp=empl.get(0);
 	
-		Validation valid=validation.findOne(id_validation);
+		Validation valid=validation.findById(id_validation).orElse(null);
 		 if(valid.getAction_pr()=='p'){
 		
-		Demande dem = demande.findOne(valid.getId_demande());
+		Demande dem = demande.findById(valid.getId_demande()).orElse(null);
 		if (bt.equals("accepter")){
 			 SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 				Date dvrd = null;
@@ -409,11 +409,11 @@ public class EmployerControlle {
 		
 			notification.save(new Notification_Reprise(emp.getId_employer(), id_demande,date_ev, date_rt));
 		
-		Demande d=demande.findOne(id_demande);
+		Demande d=demande.findById(id_demande).orElse(null);
 		
 		demande.save(new Demande(id_demande,d.getDate_envoit(), d.getDate_debut(), d.getDate_fin(), d.getPeriode(), d.getId_employer(), d.getId_type(),'r'));
 		
-		TypeCongee type= typecongee.findOne(d.getId_type());
+		TypeCongee type= typecongee.findById(d.getId_type()).orElse(null);
 		
 		long mil=1000*60*60*24;
 		long delta = d.getDate_fin().getTime()-date_rt.getTime();
@@ -466,10 +466,10 @@ public class EmployerControlle {
 	List<Employer> ep=employer.find_by_nom_utilisateur(username);
 	Employer emp=ep.get(0);
 	
-	Demande d=demande.findOne(id_demande);
+	Demande d=demande.findById(id_demande).orElse(null);
 	demande.save(new Demande(d.getId_demande(),d.getDate_envoit(),d.getDate_debut(),d.getDate_fin(),d.getPeriode(),d.getId_employer(),d.getId_type(),'a'));
 	
-	TypeCongee type= typecongee.findOne(d.getId_type());
+	TypeCongee type= typecongee.findById(d.getId_type()).orElse(null);
 	
 	SimpleDateFormat year = new SimpleDateFormat("yyyy");
 	int annee= Integer.parseInt(year.format(new Date()));

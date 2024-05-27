@@ -102,7 +102,7 @@ public class LienControlle {
 	String chaine;
 	for(int co=0;co<=reprise.size();co++){
 		Notification_Reprise rp=reprise.get(co);
-		Employer emp_rep=employer.findOne(rp.getId_employer());
+		Employer emp_rep=employer.findById(rp.getId_employer()).orElse(null);
 		chaine=emp_rep.getNom()+" repris son travaile le "+rp.getDate_retour();
 		rep_emp.add(chaine);
 	}
@@ -371,7 +371,7 @@ public class LienControlle {
 		List<Employer> emp =employer.find_by_nom_utilisateur(username);
 		Employer ep =emp.get(0);
 		model.addAttribute("emp", ep);
-		Departement dep =departement.findOne(ep.getId_departement());
+		Departement dep =departement.findById(ep.getId_departement()).orElse(null);
 		model.addAttribute("dep", dep);
 		List<TypeCongee> typ = typecongee.findAll();
 		model.addAttribute("type",typ);
@@ -408,7 +408,7 @@ public class LienControlle {
 			Demande d = dem.get(0);
 		
 		model.addAttribute("dem",d);
-		TypeCongee type=typecongee.findOne(d.getId_type());
+		TypeCongee type=typecongee.findById(d.getId_type()).orElse(null);
 		model.addAttribute("type",type);
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 		Date dt=new Date();
@@ -448,7 +448,7 @@ public class LienControlle {
 		Validation val=validation.find_id_emp_dem(emp.getId_employer(),dem.getId_demande());
 		model.addAttribute("v",val);
 		
-		TypeCongee ty=typecongee.findOne(dem.getId_type());
+		TypeCongee ty=typecongee.findById(dem.getId_type()).orElse(null);
 		String t=" dans une type de congé "+ty.getNom_type();
 		model.addAttribute("t",t);
 		
@@ -538,7 +538,7 @@ public class LienControlle {
 		Date dt=new Date();
 		model.addAttribute("date",formatter.format(dt));
 		Employer ep=emp.get(0);
-		Departement dep =departement.findOne(ep.getId_departement());
+		Departement dep =departement.findById(ep.getId_departement()).orElse(null);
 		model.addAttribute("dep", dep);
 		List<Validation> noti=validation.find_by_id_rd(ep.getId_employer(),'p');
 		model.addAttribute("notif",noti);
@@ -565,7 +565,7 @@ public class LienControlle {
 			Demande d = dem.get(0);
 		
 		model.addAttribute("dem",d);
-		TypeCongee type=typecongee.findOne(d.getId_type());
+		TypeCongee type=typecongee.findById(d.getId_type()).orElse(null);
 		model.addAttribute("type",type);
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 		Date dt=new Date();
@@ -602,7 +602,7 @@ public class LienControlle {
 		Validation val=validation.find_id_emp_dem(emp.getId_employer(),dem.getId_demande());
 		model.addAttribute("v",val);
 		
-		TypeCongee ty=typecongee.findOne(dem.getId_type());
+		TypeCongee ty=typecongee.findById(dem.getId_type()).orElse(null);
 		String t=" dans une type de congé "+ty.getNom_type();
 		model.addAttribute("t",t);
 		
@@ -782,7 +782,7 @@ public class LienControlle {
 		String chaine;
 		for(int co=0;co<=reprise.size();co++){
 			Notification_Reprise rp=reprise.get(co);
-			Employer emp_rep=employer.findOne(rp.getId_employer());
+			Employer emp_rep=employer.findById(rp.getId_employer()).orElse(null);
 			chaine=emp_rep.getNom()+" repris son travaile le "+rp.getDate_retour();
 			rep_emp.add(chaine);
 		}
@@ -872,7 +872,7 @@ public class LienControlle {
 		String chaine;
 		for(int co=0;co<=reprise.size();co++){
 			Notification_Reprise rp=reprise.get(co);
-			Employer emp_rep=employer.findOne(rp.getId_employer());
+			Employer emp_rep=employer.findById(rp.getId_employer()).orElse(null);
 			chaine=emp_rep.getNom()+" repris son travaile le "+rp.getDate_retour();
 			rep_emp.add(chaine);
 		}
@@ -948,7 +948,7 @@ public class LienControlle {
 		String chaine;
 		for(int co=0;co<=reprise.size();co++){
 			Notification_Reprise rp=reprise.get(co);
-			Employer emp_rep=employer.findOne(rp.getId_employer());
+			Employer emp_rep=employer.findById(rp.getId_employer()).orElse(null);
 			chaine=emp_rep.getNom()+" repris son travaile le "+rp.getDate_retour();
 			rep_emp.add(chaine);
 		}

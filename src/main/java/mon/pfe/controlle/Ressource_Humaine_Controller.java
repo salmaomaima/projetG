@@ -240,10 +240,10 @@ public class Ressource_Humaine_Controller {
 	@SuppressWarnings("deprecation")
 	@RequestMapping(value="/remplir_demande_r" , method=RequestMethod.GET)
 	public String remplir_demande(String date_envoit, String date_debut, int periode, Long id_employer,
-			int id_type, Model model, HttpServletRequest httpServletRequest){
-		
-int d=demande.count_demande_en_cours(id_employer, 'p');
-		
+								  int id_type, Model model, HttpServletRequest httpServletRequest){
+
+		int d=demande.count_demande_en_cours(id_employer, 'p');
+
 		String username=log.getLogedUser(httpServletRequest);
 		model.addAttribute("username",username);
 		List<Employer> ep=employer.find_by_nom_utilisateur(username);
@@ -252,82 +252,79 @@ int d=demande.count_demande_en_cours(id_employer, 'p');
 		model.addAttribute("notif",noti);
 		List<Validation>valid=validation.find_by_id_pr(emp.getId_employer(),'p');
 		model.addAttribute("valid",valid);
-		
-		TypeCongee ty=typecongee.findOne(id_type);
-		
+
+		TypeCongee ty=typecongee.findById(id_type).orElse(null);
+
 		if(d<1){
-			
+
 			SimpleDateFormat format = new SimpleDateFormat("yyyy");
 			int annee= Integer.parseInt(format.format(new Date()));
-			
+
 			Solde s1= solde.find_by_id_employer_anne(emp.getId_employer(), annee);
 			Solde s2= solde.find_by_id_employer_anne(emp.getId_employer(), (annee-1));
 			long i = s1.getTotal_solde()+s2.getTotal_solde();
-			
+
 			SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-			
-		
-		
-			
+
 			Date de = null;
 			Date dd = null;
 			try {
-				 de = formatter.parse(date_envoit);
-				 dd=formatter.parse(date_debut);
+				de = formatter.parse(date_envoit);
+				dd=formatter.parse(date_debut);
 			} catch (ParseException e) {
 				e.printStackTrace();
 			}
-			if((i<periode)&&(ty.getCode_type().equals("1111"))){
-				
+			if((i<periode)&&(ty!=null && ty.getCode_type().equals("1111"))){
+
 				String chaine ="votre solde annuelle inssfisonte vous ne pouvez pas passer cette demande ";
 				model.addAttribute("chaine",chaine);
 			}
-			
+
 			else {
-				
-				
-				
+
+
+
 				if(periode>ty.getNmbre_jours())
 				{
 					String chaine ="periode de conger demander depasse le max de cette type de conge ";
 					model.addAttribute("chaine",chaine);
 				}
 				else{
-			
-				Date df=dd;
-				 df.setDate(df.getDate()+periode);	
+
+					Date df=dd;
+					df.setDate(df.getDate()+periode);
 					demande.save(new Demande(de,dd,df,periode,id_employer,id_type,'p'));
-					
+
 					Demande dem = demande.demande_en_cours(id_employer, 'p');
-					
-//					Date date_validation_rd, Long id_demande, Long id_employer, Long id_resposable, char action_rd
-					
+
+//              Date date_validation_rd, Long id_demande, Long id_employer, Long id_resposable, char action_rd
+
 					try {
 						validation.save(new Validation(formatter.parse(formatter.format(new Date())),dem.getId_demande(),id_employer,emp.getIdresponsable(),'p'));
 					} catch (ParseException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-					
+
 					String chaine ="votre demande est en cours d'execution ...";
 					model.addAttribute("chaine",chaine);
 				}
 			}
-			
-			
+
+
 		}
-		
+
 		else {
 			String chaine ="vous avez une demande en cours d'execution vous pouvez pas affecter autre";
 			model.addAttribute("chaine",chaine);
 		}
-		
-		
-		List<Validation> arch= validation.find_to_archive('p'); 
+
+
+		List<Validation> arch= validation.find_to_archive('p');
 		model.addAttribute("arch",arch);
 		return "etat_demande_rh";
 	}
-	
+
 
 	@Secured({"ROLE_RH", "ROLE_PR"})
 	@RequestMapping(value="/annuler_demande_rh")
@@ -337,10 +334,10 @@ int d=demande.count_demande_en_cours(id_employer, 'p');
 	List<Employer> ep=employer.find_by_nom_utilisateur(username);
 	Employer emp=ep.get(0);
 	
-	Demande d=demande.findOne(id_demande);
+	Demande d=demande.findById(id_demande).orElse(null);
 	demande.save(new Demande(d.getId_demande(),d.getDate_envoit(),d.getDate_debut(),d.getDate_fin(),d.getPeriode(),d.getId_employer(),d.getId_type(),'a'));
 	
-	TypeCongee type= typecongee.findOne(d.getId_type());
+	TypeCongee type= typecongee.findById(d.getId_type()).orElse(null);
 	
 	SimpleDateFormat year = new SimpleDateFormat("yyyy");
 	int annee= Integer.parseInt(year.format(new Date()));
@@ -405,7 +402,7 @@ int d=demande.count_demande_en_cours(id_employer, 'p');
 //					System.out.println(s);
 //					solde.delete(s.getId_Solde());
 //				}
-				employer.delete(employer.findOne(id_employer));
+				employer.delete(employer.findById(id_employer).orElse(null));
 				
 				model.addAttribute("username",username);
 				List<Employer> list = employer.findAll();
@@ -417,16 +414,16 @@ int d=demande.count_demande_en_cours(id_employer, 'p');
 			  
 			  model.addAttribute("username",username);
 			  
-			  Employer ep= employer.findOne(id_employer);
+			  Employer ep= employer.findById(id_employer).orElse(null);
 			  model.addAttribute("emp", ep);
 			  
-			  Employer res=employer.findOne(ep.getIdresponsable());
+			  Employer res=employer.findById(ep.getIdresponsable()).orElse(null);
 				model.addAttribute("res", res);
 				
-				Departement dep1=departement.findOne(ep.getId_departement());
+				Departement dep1=departement.findById(ep.getId_departement()).orElse(null);
 				model.addAttribute("dep1", dep1);
 				
-				Roles r=role.findOne(ep.getId_role());
+				Roles r=role.findById(ep.getId_role()).orElse(null);
 				model.addAttribute("ro", r);
 				
 				List<Employer> list = employer.findAll();
@@ -462,7 +459,7 @@ int d=demande.count_demande_en_cours(id_employer, 'p');
 			
 			
 		  if (bt.equals("supprimer")){
-				typecongee.delete(typecongee.findOne(id_type));
+				typecongee.delete(typecongee.findById(id_type).orElse(null));
 				
 				model.addAttribute("username",username);
 				
@@ -482,7 +479,7 @@ int d=demande.count_demande_en_cours(id_employer, 'p');
 			 
 			  model.addAttribute("username",username);
 			  
-			  TypeCongee type= typecongee.findOne(id_type);
+			  TypeCongee type= typecongee.findById(id_type).orElse(null);
 				model.addAttribute("type", type);
 				
 				List<Employer> list = employer.findAll();
@@ -501,7 +498,7 @@ int d=demande.count_demande_en_cours(id_employer, 'p');
 	  @RequestMapping(value="/del_mod_dep", method=RequestMethod.GET)
 	  public String del_mod_dep(@RequestParam(required=true, value="action")String bt ,int id_departement,Model model, HttpServletRequest httpServletRequest ) {
 		  if (bt.equals("supprimer")){
-				departement.delete(departement.findOne(id_departement));
+				departement.delete(departement.findById(id_departement).orElse(null));
 				String username=log.getLogedUser(httpServletRequest);
 				model.addAttribute("username",username);
 				
@@ -515,10 +512,10 @@ int d=demande.count_demande_en_cours(id_employer, 'p');
 			  String username=log.getLogedUser(httpServletRequest);
 			  model.addAttribute("username",username);
 			
-			  Departement dp= departement.findOne(id_departement);
+			  Departement dp= departement.findById(id_departement).orElse(null);
 				model.addAttribute("dep", dp);
 				
-				Employer ep=employer.findOne(dp.getId_chef());
+				Employer ep=employer.findById(dp.getId_chef()).orElse(null);
 				model.addAttribute("emp1",ep);
 				List<Employer> list = employer.findAll();
 				model.addAttribute("emp",list);
@@ -553,12 +550,12 @@ int d=demande.count_demande_en_cours(id_employer, 'p');
 			List<Validation> arch= validation.find_to_archive('p'); 
 			model.addAttribute("arch",arch);
 			
-			Validation notif=validation.findOne(ntf);
-			Employer emp_env=employer.findOne(notif.getId_employer());
-			Employer rd=employer.findOne(notif.getId_responsable());
-			Demande dem=demande.findOne(notif.getId_demande());
-			TypeCongee type=typecongee.findOne(dem.getId_type());
-			Departement dp=departement.findOne(emp_env.getId_departement());
+			Validation notif=validation.findById(ntf).orElse(null);
+			Employer emp_env=employer.findById(notif.getId_employer()).orElse(null);
+			Employer rd=employer.findById(notif.getId_responsable()).orElse(null);
+			Demande dem=demande.findById(notif.getId_demande()).orElse(null);
+			TypeCongee type=typecongee.findById(dem.getId_type()).orElse(null);
+			Departement dp=departement.findById(emp_env.getId_departement()).orElse(null);
 			
 			SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 			Date dt=new Date();
@@ -576,10 +573,10 @@ int d=demande.count_demande_en_cours(id_employer, 'p');
 		public String validation_N1(@RequestParam(required=true, value="action")String bt,Long id_validation,Long id_employer, Long id_demande,Long id_responsable, String avis_rd,
 					Long id_remplacant,String date_validation_rd, Model model, HttpServletRequest httpServletRequest){		
 			
-			Employer emp =employer.findOne(id_employer);
-			Departement dep =departement.findOne(emp.getId_departement());
+			Employer emp =employer.findById(id_employer).orElse(null);
+			Departement dep =departement.findById(emp.getId_departement()).orElse(null);
 		
-			Validation vali=validation.findOne(id_validation);
+			Validation vali=validation.findById(id_validation).orElse(null);
 			 if(vali.getAction_rd()=='p'){
 			
 			 if (bt.equals("accepter")){
@@ -604,7 +601,7 @@ int d=demande.count_demande_en_cours(id_employer, 'p');
 				
 				 
 				 
-				 Demande dem = demande.findOne(id_demande);
+				 Demande dem = demande.findById(id_demande).orElse(null);
 				
 					demande.save(new Demande(dem.getId_demande(),dem.getDate_envoit(),dem.getDate_debut(),dem.getDate_fin(),dem.getPeriode(),dem.getId_employer(),dem.getId_type(),'n'));
 					String chaine =" votre refus a ete bien saisi";
@@ -647,13 +644,13 @@ int d=demande.count_demande_en_cours(id_employer, 'p');
 			List<Validation> arch= validation.find_to_archive('p'); 
 			model.addAttribute("arch",arch);
 			
-			Validation valid=validation.findOne(vld);
-			Employer emp_env=employer.findOne(valid.getId_employer());
-			Employer rd=employer.findOne(valid.getId_responsable());
-			Employer pr=employer.findOne(valid.getId_premier_responsable());
-			Employer rp=employer.findOne(valid.getId_remplaçant());
-			Demande dem=demande.findOne(valid.getId_demande());
-			TypeCongee type=typecongee.findOne(dem.getId_type());
+			Validation valid=validation.findById(vld).orElse(null);
+			Employer emp_env=employer.findById(valid.getId_employer()).orElse(null);
+			Employer rd=employer.findById(valid.getId_responsable()).orElse(null);
+			Employer pr=employer.findById(valid.getId_premier_responsable()).orElse(null);
+			Employer rp=employer.findById(valid.getId_remplaçant()).orElse(null);
+			Demande dem=demande.findById(valid.getId_demande()).orElse(null);
+			TypeCongee type=typecongee.findById(dem.getId_type()).orElse(null);
 			
 			SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 			Date dt=new Date();
@@ -685,10 +682,10 @@ int d=demande.count_demande_en_cours(id_employer, 'p');
 		List<Employer> empl=employer.find_by_nom_utilisateur(username);
 		Employer emp=empl.get(0);
 		
-			Validation valid=validation.findOne(id_validation);
+			Validation valid=validation.findById(id_validation).orElse(null);
 			 if(valid.getAction_pr()=='p'){
 			
-			Demande dem = demande.findOne(valid.getId_demande());
+			Demande dem = demande.findById(valid.getId_demande()).orElse(null);
 			if (bt.equals("accepter")){
 				 SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 					Date dvrd = null;
@@ -761,25 +758,25 @@ int d=demande.count_demande_en_cours(id_employer, 'p');
 			List<Validation> noti=validation.find_by_id_rd(emp.getId_employer(),'p');
 			model.addAttribute("notif",noti);
 			
-			Validation valid=validation.findOne(vld);
+			Validation valid=validation.findById(vld).orElse(null);
 			model.addAttribute("validation",valid);
 			
-			Employer emp_env=employer.findOne(valid.getId_employer());
+			Employer emp_env=employer.findById(valid.getId_employer()).orElse(null);
 			model.addAttribute("emp_env",emp_env);
 			
-			Employer rd=employer.findOne(valid.getId_responsable());
+			Employer rd=employer.findById(valid.getId_responsable()).orElse(null);
 			model.addAttribute("rd",rd);
 			
-			Employer pr=employer.findOne(valid.getId_premier_responsable());
+			Employer pr=employer.findById(valid.getId_premier_responsable()).orElse(null);
 			model.addAttribute("pr",pr);
 			
-			Employer rp=employer.findOne(valid.getId_remplaçant());
+			Employer rp=employer.findById(valid.getId_remplaçant()).orElse(null);
 			model.addAttribute("rp",rp);
 			
-			Demande dem=demande.findOne(valid.getId_demande());
+			Demande dem=demande.findById(valid.getId_demande()).orElse(null);
 			model.addAttribute("dem",dem);
 			
-			TypeCongee type=typecongee.findOne(dem.getId_type());
+			TypeCongee type=typecongee.findById(dem.getId_type()).orElse(null);
 			model.addAttribute("type",type);
 			
 			SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
@@ -820,17 +817,17 @@ int d=demande.count_demande_en_cours(id_employer, 'p');
 			List<Employer> ep=employer.find_by_nom_utilisateur(username);
 			Employer emp=ep.get(0);
 			
-		  Validation valid=validation.findOne(id_validation);
+		  Validation valid=validation.findById(id_validation).orElse(null);
 		  
 		  if(valid.getAction_rh()=='p'){
 		  
 		  validation.save(new Validation(id_validation,valid.getDate_validation_rd(),valid.getDate_validation_pr(),valid.getId_demande(),valid.getId_employer(),valid.getId_remplaçant(),
 					 valid.getId_responsable(),valid.getId_premier_responsable(),'o','o','o',valid.getAvis_rd(),valid.getAvis_pr()));
 		  
-		  Demande dem = demande.findOne(valid.getId_demande());
+		  Demande dem = demande.findById(valid.getId_demande()).orElse(null);
 		  demande.save(new Demande(dem.getId_demande(),dem.getDate_envoit(),dem.getDate_debut(),dem.getDate_fin(),dem.getPeriode(),dem.getId_employer(),dem.getId_type(),'o'));
-		  TypeCongee type=typecongee.findOne(dem.getId_type());
-		  Employer empl = employer.findOne(valid.getId_employer());
+		  TypeCongee type=typecongee.findById(dem.getId_type()).orElse(null);
+		  Employer empl = employer.findById(valid.getId_employer()).orElse(null);
 			
 			SimpleDateFormat format = new SimpleDateFormat("yyyy");
 			Date dt=new Date();
@@ -932,11 +929,11 @@ int d=demande.count_demande_en_cours(id_employer, 'p');
 			
 				notification.save(new Notification_Reprise(emp.getId_employer(), id_demande,date_ev, date_rt));
 			
-			Demande d=demande.findOne(id_demande);
+			Demande d=demande.findById(id_demande).orElse(null);
 			
 			demande.save(new Demande(id_demande,d.getDate_envoit(), d.getDate_debut(), d.getDate_fin(), d.getPeriode(), d.getId_employer(), d.getId_type(),'r'));
 			
-			TypeCongee type= typecongee.findOne(d.getId_type());
+			TypeCongee type= typecongee.findById(d.getId_type()).orElse(null);
 			
 			long mil=1000*60*60*24;
 			long delta = d.getDate_fin().getTime()-date_rt.getTime();

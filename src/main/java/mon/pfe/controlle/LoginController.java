@@ -1,11 +1,7 @@
 package mon.pfe.controlle;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -106,8 +102,8 @@ public class LoginController {
 			 solde.save(new Solde(0, 60, 6, 28, annee, emp.getId_employer(), dt));
 		 }
 
-		 String nomPrenom=emp.getPrenom()+" "+emp.getNom();
-		 model.addAttribute("nomPrenom",nomPrenom);
+		 String nomPrenom = emp.getPrenom() + " " + emp.getNom();
+		 model.addAttribute("nomPrenom", nomPrenom);
 		 List<Validation> noti = validation.find_by_id_rd(emp.getId_employer(), 'p');
 		 model.addAttribute("notif", noti);
 
@@ -134,9 +130,10 @@ public class LoginController {
 		 } else {
 			 List<String> rep_emp = new ArrayList<>();
 			 for (Notification_Reprise rp : reprise) {
-				 Employer emp_rep = employer.findOne(rp.getId_employer());
-				 if (emp_rep != null) {
-					 String chaine = emp_rep.getNom() + " repris son travaile le " + rp.getDate_retour();
+				 Optional<Employer> empOptional = employer.findById(rp.getId_employer());
+				 if (empOptional.isPresent()) {
+					 Employer emp_rep = empOptional.get();
+					 String chaine = emp_rep.getNom() + " repris son travail le " + rp.getDate_retour();
 					 rep_emp.add(chaine);
 				 }
 			 }
@@ -147,8 +144,7 @@ public class LoginController {
 		 model.addAttribute("dem_ann", dem_ann);
 
 		 HttpSession httpSession = httpServletRequest.getSession();
-		 SecurityContext securityContext = (SecurityContext)
-				 httpSession.getAttribute("SPRING_SECURITY_CONTEXT");
+		 SecurityContext securityContext = (SecurityContext) httpSession.getAttribute("SPRING_SECURITY_CONTEXT");
 		 if (securityContext == null || securityContext.getAuthentication() == null) {
 			 // Ajouter un message de log pour déboguer
 			 System.err.println("Contexte de sécurité introuvable ou non authentifié");
@@ -179,4 +175,5 @@ public class LoginController {
 			 return "error";
 		 }
 	 }}
+
 
